@@ -1,0 +1,22 @@
+{
+  "name": "profile-app",
+  "version": "1.0.0",
+  "description": "SSApp for profile management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PrivateSky/profile-app.git"
+  },
+  "keywords": [
+    "ssapp"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PrivateSky/profile-app/issues"
+  },
+  "homepage": "https://github.com/PrivateSky/profile-app#readme"
+}
