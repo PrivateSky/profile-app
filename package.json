@@ -4,6 +4,7 @@
   "description": "SSApp for profile management",
   "main": "index.js",
   "scripts": {
+    "build": "node ./bin/build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
