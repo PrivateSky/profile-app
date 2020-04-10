@@ -1,0 +1,34 @@
+<psk-page title="Profile">
+    <psk-container controller-name="ProfileController">
+        <psk-img src="@avatarUrl">
+        </psk-img>
+
+        <psk-form-row>
+            <psk-text-input view-model="_name"></psk-text-input>
+        </psk-form-row>
+        <psk-form-row>
+            <psk-text-input view-model="_email"></psk-text-input>
+        </psk-form-row>
+        <psk-form-row>
+            <psk-text-input view-model="_companyName"></psk-text-input>
+        </psk-form-row>
+        <psk-form-row>
+            <psk-text-input view-model="_country"></psk-text-input>
+        </psk-form-row>
+
+        <psk-form-row>
+            <ul id="files-for-upload">
+            </ul>
+            <psk-files-chooser label="Choose avatar" event-name="profile:choose-avatar"></psk-files-chooser>
+            <psk-button label="Upload" button-class="btn btn-info" event-name="profile:upload-avatar"></psk-button>
+        </psk-form-row>
+
+        <p style="margin-top: 20px">
+            <psk-button label="Save profile" button-class="btn btn-primary" event-name="profile:save"></psk-button>
+        </p>
+
+        <psk-list-feedbacks>
+        </psk-list-feedbacks>
+
+    </psk-container>
+</psk-page>
