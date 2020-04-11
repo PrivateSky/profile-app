@@ -4,12 +4,16 @@
   "description": "SSApp for profile management",
   "main": "index.js",
   "scripts": {
+    "prebuild": "node ./node_modules/octopus/scripts/install ./bin/prebuild_octopus.json",
     "build": "node ./bin/build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PrivateSky/profile-app.git"
+  },
+  "dependencies": {
+    "octopus": "git+https://github.com/PrivateSky/updater.git"
   },
   "keywords": [
     "ssapp"
