@@ -34,6 +34,10 @@
         globalConfig = {
             theme: 'default'
         }
+
+        if(window.parent){
+            window.parent.postMessage({status:"completed"},"*");
+        }
     </script>
 </body>
 
