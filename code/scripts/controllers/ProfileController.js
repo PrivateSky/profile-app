@@ -1,6 +1,5 @@
 import BindableController from './base-controllers/BindableController.js';
 import ProfileModel from './../models/ProfileModel.js';
-import SWAgent from './../SWAgent.js';
 
 export default class ProfileController extends BindableController {
 
@@ -41,16 +40,6 @@ export default class ProfileController extends BindableController {
             e.stopImmediatePropagation();
             this._saveProfile();
         })
-
-        SWAgent.load('3O7F039AWugwrShIwU1xSDu0N2tG99vgwrdQ0xupkbA%3D%7CImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCI%3De', (err, result) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            if (result.status === 'initialized') {
-                window.location.reload(true);
-            }
-        });
     }
 
     /**
