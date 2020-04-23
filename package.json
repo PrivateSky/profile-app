@@ -13,7 +13,7 @@
     "url": "git+https://github.com/PrivateSky/profile-app.git"
   },
   "dependencies": {
-    "octopus": "git+https://github.com/PrivateSky/octopus.git"
+    "octopus": "git+https://github.com/PrivateSky/octopus.git#1.0"
   },
   "keywords": [
     "ssapp"
