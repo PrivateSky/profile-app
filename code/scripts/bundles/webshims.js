@@ -108,6 +108,8 @@ let logger = console;
 
 if (!global.process || process.env.NO_LOGS !== 'true') {
     try {
+        const zmqName = "zeromq";
+        require(zmqName);
         const PSKLoggerModule = require('psklogger');
         const PSKLogger = PSKLoggerModule.PSKLogger;
 
@@ -115,7 +117,7 @@ if (!global.process || process.env.NO_LOGS !== 'true') {
 
         console.log('Logger init successful', process.pid);
     } catch (e) {
-        if(e.message.indexOf("psklogger")!==-1){
+        if(e.message.indexOf("psklogger")!==-1 || e.message.indexOf("zeromq")!==-1){
             console.log('Logger not available, using console');
             logger = console;
         }else{
@@ -30739,6 +30741,16 @@ try {
 
 var bufferFrom = require('buffer-from');
 
+/**
+ * Requires a module which is protected against bundler minification.
+ *
+ * @param {NodeModule} mod
+ * @param {string} request
+ */
+function dynamicRequire(mod, request) {
+  return mod.require(request);
+}
+
 // Only install once if called multiple times
 var errorFormatterInstalled = false;
 var uncaughtShimInstalled = false;
@@ -31285,6 +31297,17 @@ exports.install = function(options) {
   if (!uncaughtShimInstalled) {
     var installHandler = 'handleUncaughtExceptions' in options ?
       options.handleUncaughtExceptions : true;
+
+    // Do not override 'uncaughtException' with our own handler in Node.js
+    // Worker threads. Workers pass the error to the main thread as an event,
+    // rather than printing something to stderr and exiting.
+    try {
+      // We need to use `dynamicRequire` because `require` on it's own will be optimized by WebPack/Browserify.
+      var worker_threads = dynamicRequire(module, 'worker_threads');
+      if (worker_threads.isMainThread === false) {
+        installHandler = false;
+      }
+    } catch(e) {}
 
     // Provide the option to not install the uncaught exception handler. This is
     // to support other uncaught exception handlers (in test frameworks, for
@@ -34670,7 +34693,7 @@ function enableForEnvironment(envType){
 
             } catch (err) {
                 if (err.type !== "PSKIgnorableError") {
-                    $$.err("Require encountered an error while loading ", request, "\nCause:\n", err.stack);
+                    //$$.err("Require encountered an error while loading ", request, "\nCause:\n", err.stack);
                 }
             }
         }

@@ -55,6 +55,8 @@ let logger = console;
 
 if (!global.process || process.env.NO_LOGS !== 'true') {
     try {
+        const zmqName = "zeromq";
+        require(zmqName);
         const PSKLoggerModule = require('psklogger');
         const PSKLogger = PSKLoggerModule.PSKLogger;
 
@@ -62,7 +64,7 @@ if (!global.process || process.env.NO_LOGS !== 'true') {
 
         console.log('Logger init successful', process.pid);
     } catch (e) {
-        if(e.message.indexOf("psklogger")!==-1){
+        if(e.message.indexOf("psklogger")!==-1 || e.message.indexOf("zeromq")!==-1){
             console.log('Logger not available, using console');
             logger = console;
         }else{
@@ -1512,7 +1514,81 @@ exports.jsonToNative = function(serialisedValues, result){
     };
 
 };
-},{"./OwM":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/OwM.js"}],"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/pingpongFork.js":[function(require,module,exports){
+},{"./OwM":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/OwM.js"}],"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/path.js":[function(require,module,exports){
+function replaceAll(str, search, replacement) {
+    return str.split(search).join(replacement);
+}
+
+function resolve(pth) {
+    let pathSegments = pth.split("/");
+    let makeAbsolute = pathSegments[0] === "" ? true : false;
+    for (let i = 0; i < pathSegments.length; i++) {
+        let segment = pathSegments[i];
+        if (segment === "..") {
+            let j = 1;
+            if (i > 0) {
+                j = j + 1;
+            } else {
+                makeAbsolute = true;
+            }
+            pathSegments.splice(i + 1 - j, j);
+            i = i - j;
+        }
+    }
+    let res = pathSegments.join("/");
+    if (makeAbsolute && res !== "") {
+        res = __ensureIsAbsolute(res);
+    }
+    return res;
+}
+
+function normalize(pth) {
+    if (typeof pth !== "string") {
+        throw new TypeError();
+    }
+    pth = replaceAll(pth, "\\", "/");
+    pth = replaceAll(pth, /[/]+/, "/");
+
+    return resolve(pth);
+}
+
+function join(...args) {
+    let pth = "";
+    for (let i = 0; i < args.length; i++) {
+        pth += "/" + args[i];
+    }
+    return normalize(pth);
+}
+
+function __ensureIsAbsolute(pth) {
+    if (pth[0] !== "/") {
+        pth = "/" + pth;
+    }
+    return pth;
+}
+
+function isAbsolute(pth) {
+    pth = normalize(pth);
+    if (pth[0] !== "/") {
+        return false;
+    }
+
+    return true;
+}
+
+function ensureIsAbsolute(pth) {
+    pth = normalize(pth);
+    return __ensureIsAbsolute(pth);
+}
+
+module.exports = {
+    normalize,
+    join,
+    isAbsolute,
+    ensureIsAbsolute
+};
+
+},{}],"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/pingpongFork.js":[function(require,module,exports){
 const PING = "PING";
 const PONG = "PONG";
 
@@ -5063,7 +5139,7 @@ function enableForEnvironment(envType){
 
             } catch (err) {
                 if (err.type !== "PSKIgnorableError") {
-                    $$.err("Require encountered an error while loading ", request, "\nCause:\n", err.stack);
+                    //$$.err("Require encountered an error while loading ", request, "\nCause:\n", err.stack);
                 }
             }
         }
@@ -5267,6 +5343,16 @@ try {
 }
 
 var bufferFrom = require('buffer-from');
+
+/**
+ * Requires a module which is protected against bundler minification.
+ *
+ * @param {NodeModule} mod
+ * @param {string} request
+ */
+function dynamicRequire(mod, request) {
+  return mod.require(request);
+}
 
 // Only install once if called multiple times
 var errorFormatterInstalled = false;
@@ -5815,6 +5901,17 @@ exports.install = function(options) {
     var installHandler = 'handleUncaughtExceptions' in options ?
       options.handleUncaughtExceptions : true;
 
+    // Do not override 'uncaughtException' with our own handler in Node.js
+    // Worker threads. Workers pass the error to the main thread as an event,
+    // rather than printing something to stderr and exiting.
+    try {
+      // We need to use `dynamicRequire` because `require` on it's own will be optimized by WebPack/Browserify.
+      var worker_threads = dynamicRequire(module, 'worker_threads');
+      if (worker_threads.isMainThread === false) {
+        installHandler = false;
+      }
+    } catch(e) {}
+
     // Provide the option to not install the uncaught exception handler. This is
     // to support other uncaught exception handlers (in test frameworks, for
     // example). If this handler is not installed and there are no other uncaught
@@ -5866,7 +5963,7 @@ module.exports.uidGenerator = uidGenerator;
 module.exports.generateUid = uidGenerator.generateUid;
 module.exports.TaskCounter = require("./lib/TaskCounter");
 module.exports.SwarmPacker = require("./lib/SwarmPacker");
-
+module.exports.path = require("./lib/path");
 module.exports.createPskConsole = function () {
   return require('./lib/pskconsole');
 };
@@ -5884,5 +5981,5 @@ if(typeof global.$$.uidGenerator == "undefined"){
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./lib/Combos":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/Combos.js","./lib/OwM":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/OwM.js","./lib/Queue":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/Queue.js","./lib/SwarmPacker":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/SwarmPacker.js","./lib/TaskCounter":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/TaskCounter.js","./lib/beesHealer":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/beesHealer.js","./lib/pingpongFork":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/pingpongFork.js","./lib/pskconsole":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/pskconsole.js","./lib/safe-uuid":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/safe-uuid.js","./lib/uidGenerator":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/uidGenerator.js"}]},{},["/home/vlad/Development/privatesky/web-wallet/privatesky/builds/tmp/bindableModel_intermediar.js"])
+},{"./lib/Combos":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/Combos.js","./lib/OwM":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/OwM.js","./lib/Queue":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/Queue.js","./lib/SwarmPacker":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/SwarmPacker.js","./lib/TaskCounter":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/TaskCounter.js","./lib/beesHealer":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/beesHealer.js","./lib/path":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/path.js","./lib/pingpongFork":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/pingpongFork.js","./lib/pskconsole":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/pskconsole.js","./lib/safe-uuid":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/safe-uuid.js","./lib/uidGenerator":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/uidGenerator.js"}]},{},["/home/vlad/Development/privatesky/web-wallet/privatesky/builds/tmp/bindableModel_intermediar.js"])
 //# sourceMappingURL=bindableModel.js.map

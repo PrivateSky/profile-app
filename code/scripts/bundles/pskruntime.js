@@ -3700,15 +3700,16 @@ function BootEngine(getSeed, getEDFS, initializeSwarmEngine, runtimeBundles, con
 
 	const EDFS = require('edfs');
 	let edfs;
+	const pskPath = require("swarmutils").path;
 
 	const evalBundles = async (bundles, ignore) => {
 		const listFiles = promisify(this.rawDossier.listFiles);
 		const readFile = promisify(this.rawDossier.readFile);
 
-		let fileList = await listFiles("/" + EDFS.constants.CSB.CODE_FOLDER + "/" + EDFS.constants.CSB.CONSTITUTION_FOLDER);
+		let fileList = await listFiles(pskPath.join(EDFS.constants.CSB.CODE_FOLDER, EDFS.constants.CSB.CONSTITUTION_FOLDER));
 
-		fileList = bundles.filter(bundle => fileList.includes(`${bundle}`))
-			.map(bundle => `/${EDFS.constants.CSB.CODE_FOLDER + "/" + EDFS.constants.CSB.CONSTITUTION_FOLDER}/${bundle}`);
+		fileList = bundles.filter(bundle => fileList.includes(bundle))
+			.map(bundle => pskPath.join(EDFS.constants.CSB.CODE_FOLDER, EDFS.constants.CSB.CONSTITUTION_FOLDER, bundle));
 
 		if (fileList.length !== bundles.length) {
 			const message = `Some bundles missing. Expected to have ${JSON.stringify(bundles)} but got only ${JSON.stringify(fileList)}`;
@@ -3770,7 +3771,7 @@ function promisify(fn) {
 
 module.exports = BootEngine;
 
-},{"edfs":false}],"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarm-engine/bootScripts/IsolateBootScript.js":[function(require,module,exports){
+},{"edfs":false,"swarmutils":"swarmutils"}],"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarm-engine/bootScripts/IsolateBootScript.js":[function(require,module,exports){
 
 async function getIsolatesWorker({workerData: {constitutions}, externalApi}) {
     const swarmUtils = require('swarmutils');
@@ -4058,8 +4059,9 @@ function plugPowerCords() {
                 }
 
                 const EDFS = require("edfs");
+                const pskPath = require("swarmutils").path;
                 const rawDossier = self.edfs.loadRawDossier(self.seed);
-                rawDossier.readFile("/" + EDFS.constants.CSB.CODE_FOLDER + "/" + EDFS.constants.CSB.CONSTITUTION_FOLDER + '/threadBoot.js', (err, fileContents) => {
+                rawDossier.readFile(pskPath.join(EDFS.constants.CSB.CODE_FOLDER, EDFS.constants.CSB.CONSTITUTION_FOLDER , "threadBoot.js"), (err, fileContents) => {
                     if (err) {
                         throw err;
                     }
@@ -4078,7 +4080,7 @@ function plugPowerCords() {
 }
 
 boot();
-},{"./BootEngine":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarm-engine/bootScripts/BootEngine.js","dossier":false,"edfs":false,"path":"path","soundpubsub":"soundpubsub","swarm-engine":"swarm-engine"}],"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarm-engine/bootScripts/index.js":[function(require,module,exports){
+},{"./BootEngine":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarm-engine/bootScripts/BootEngine.js","dossier":false,"edfs":false,"path":"path","soundpubsub":"soundpubsub","swarm-engine":"swarm-engine","swarmutils":"swarmutils"}],"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarm-engine/bootScripts/index.js":[function(require,module,exports){
 module.exports = {
     getIsolatesBootScript: function() {
         return require('./IsolateBootScript');
@@ -4578,11 +4580,27 @@ function SmartRemoteChannelPowerCord(communicationAddrs, receivingChannelName, z
     let receivingHost = Array.isArray(communicationAddrs) && communicationAddrs.length > 0 ? communicationAddrs[0] : "http://127.0.0.1";
     receivingChannelName = receivingChannelName || generateChannelName();
 
+    function testIfZeroMQAvailable(suplimentaryCondition){
+        let available = true;
+        let zmqModule;
+        try{
+            let zmqName = "zeromq";
+            zmqModule = require(zmqName);
+        }catch(err){
+            console.log("Zeromq not available at this moment.");
+        }
+        available = typeof zmqModule !== "undefined";
+        if(typeof suplimentaryCondition !== "undefined"){
+            available = available && suplimentaryCondition;
+        }
+        return available;
+    }
+
     let setup = () => {
         //injecting necessary http methods
         require("../../psk-http-client");
 
-        const opts = {autoCreate: true, enableForward: typeof zeroMQAddress !== "undefined", publicSignature: "none"};
+        const opts = {autoCreate: true, enableForward: testIfZeroMQAvailable(typeof zeroMQAddress !== "undefined"), publicSignature: "none"};
 
         console.log(`\n[***] Using channel "${receivingChannelName}" on "${receivingHost}".\n`);
         //maybe instead of receivingChannelName we sould use our identity? :-??
@@ -4599,7 +4617,16 @@ function SmartRemoteChannelPowerCord(communicationAddrs, receivingChannelName, z
         }
 
 
-        if (typeof zeroMQAddress === "undefined") {
+        if (testIfZeroMQAvailable(typeof zeroMQAddress !== "undefined")) {
+            //let's connect to zmq
+            const reqFactory = require("virtualmq").getVMQRequestFactory(receivingHost, zeroMQAddress);
+            reqFactory.receiveMessageFromZMQ($$.remote.base64Encode(receivingChannelName), opts.publicSignature, (...args) => {
+                console.log("zeromq connection established");
+            }, (channelName, swarmSerialization) => {
+                console.log("Look", channelName, swarmSerialization);
+                handlerSwarmSerialization(swarmSerialization);
+            });
+        } else {
             $$.remote[inbound].on("*", "*", "*", (err, swarmSerialization) => {
                 if (err) {
                     console.log("Got an error from our channel", err);
@@ -4610,15 +4637,6 @@ function SmartRemoteChannelPowerCord(communicationAddrs, receivingChannelName, z
                     swarmSerialization = toArrayBuffer(swarmSerialization);
                 }
 
-                handlerSwarmSerialization(swarmSerialization);
-            });
-        } else {
-            //let's connect to zmq
-            const reqFactory = require("virtualmq").getVMQRequestFactory(receivingHost, zeroMQAddress);
-            reqFactory.receiveMessageFromZMQ($$.remote.base64Encode(receivingChannelName), opts.publicSignature, (...args) => {
-                console.log("zeromq connection established");
-            }, (channelName, swarmSerialization) => {
-                console.log("Look", channelName, swarmSerialization);
                 handlerSwarmSerialization(swarmSerialization);
             });
         }
@@ -5709,7 +5727,81 @@ exports.jsonToNative = function(serialisedValues, result){
     };
 
 };
-},{"./OwM":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/OwM.js"}],"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/pingpongFork.js":[function(require,module,exports){
+},{"./OwM":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/OwM.js"}],"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/path.js":[function(require,module,exports){
+function replaceAll(str, search, replacement) {
+    return str.split(search).join(replacement);
+}
+
+function resolve(pth) {
+    let pathSegments = pth.split("/");
+    let makeAbsolute = pathSegments[0] === "" ? true : false;
+    for (let i = 0; i < pathSegments.length; i++) {
+        let segment = pathSegments[i];
+        if (segment === "..") {
+            let j = 1;
+            if (i > 0) {
+                j = j + 1;
+            } else {
+                makeAbsolute = true;
+            }
+            pathSegments.splice(i + 1 - j, j);
+            i = i - j;
+        }
+    }
+    let res = pathSegments.join("/");
+    if (makeAbsolute && res !== "") {
+        res = __ensureIsAbsolute(res);
+    }
+    return res;
+}
+
+function normalize(pth) {
+    if (typeof pth !== "string") {
+        throw new TypeError();
+    }
+    pth = replaceAll(pth, "\\", "/");
+    pth = replaceAll(pth, /[/]+/, "/");
+
+    return resolve(pth);
+}
+
+function join(...args) {
+    let pth = "";
+    for (let i = 0; i < args.length; i++) {
+        pth += "/" + args[i];
+    }
+    return normalize(pth);
+}
+
+function __ensureIsAbsolute(pth) {
+    if (pth[0] !== "/") {
+        pth = "/" + pth;
+    }
+    return pth;
+}
+
+function isAbsolute(pth) {
+    pth = normalize(pth);
+    if (pth[0] !== "/") {
+        return false;
+    }
+
+    return true;
+}
+
+function ensureIsAbsolute(pth) {
+    pth = normalize(pth);
+    return __ensureIsAbsolute(pth);
+}
+
+module.exports = {
+    normalize,
+    join,
+    isAbsolute,
+    ensureIsAbsolute
+};
+
+},{}],"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/pingpongFork.js":[function(require,module,exports){
 const PING = "PING";
 const PONG = "PONG";
 
@@ -9779,6 +9871,16 @@ try {
 
 var bufferFrom = require('buffer-from');
 
+/**
+ * Requires a module which is protected against bundler minification.
+ *
+ * @param {NodeModule} mod
+ * @param {string} request
+ */
+function dynamicRequire(mod, request) {
+  return mod.require(request);
+}
+
 // Only install once if called multiple times
 var errorFormatterInstalled = false;
 var uncaughtShimInstalled = false;
@@ -10326,6 +10428,17 @@ exports.install = function(options) {
     var installHandler = 'handleUncaughtExceptions' in options ?
       options.handleUncaughtExceptions : true;
 
+    // Do not override 'uncaughtException' with our own handler in Node.js
+    // Worker threads. Workers pass the error to the main thread as an event,
+    // rather than printing something to stderr and exiting.
+    try {
+      // We need to use `dynamicRequire` because `require` on it's own will be optimized by WebPack/Browserify.
+      var worker_threads = dynamicRequire(module, 'worker_threads');
+      if (worker_threads.isMainThread === false) {
+        installHandler = false;
+      }
+    } catch(e) {}
+
     // Provide the option to not install the uncaught exception handler. This is
     // to support other uncaught exception handlers (in test frameworks, for
     // example). If this handler is not installed and there are no other uncaught
@@ -10405,7 +10518,7 @@ module.exports.uidGenerator = uidGenerator;
 module.exports.generateUid = uidGenerator.generateUid;
 module.exports.TaskCounter = require("./lib/TaskCounter");
 module.exports.SwarmPacker = require("./lib/SwarmPacker");
-
+module.exports.path = require("./lib/path");
 module.exports.createPskConsole = function () {
   return require('./lib/pskconsole');
 };
@@ -10423,7 +10536,7 @@ if(typeof global.$$.uidGenerator == "undefined"){
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./lib/Combos":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/Combos.js","./lib/OwM":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/OwM.js","./lib/Queue":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/Queue.js","./lib/SwarmPacker":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/SwarmPacker.js","./lib/TaskCounter":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/TaskCounter.js","./lib/beesHealer":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/beesHealer.js","./lib/pingpongFork":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/pingpongFork.js","./lib/pskconsole":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/pskconsole.js","./lib/safe-uuid":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/safe-uuid.js","./lib/uidGenerator":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/uidGenerator.js"}],"syndicate":[function(require,module,exports){
+},{"./lib/Combos":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/Combos.js","./lib/OwM":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/OwM.js","./lib/Queue":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/Queue.js","./lib/SwarmPacker":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/SwarmPacker.js","./lib/TaskCounter":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/TaskCounter.js","./lib/beesHealer":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/beesHealer.js","./lib/path":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/path.js","./lib/pingpongFork":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/pingpongFork.js","./lib/pskconsole":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/pskconsole.js","./lib/safe-uuid":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/safe-uuid.js","./lib/uidGenerator":"/home/vlad/Development/privatesky/web-wallet/privatesky/modules/swarmutils/lib/uidGenerator.js"}],"syndicate":[function(require,module,exports){
 const fs = require('fs');
 const path = require('path');
 const PoolConfig = require('./lib/PoolConfig');

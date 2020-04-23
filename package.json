@@ -4,7 +4,8 @@
   "description": "SSApp for profile management",
   "main": "index.js",
   "scripts": {
-    "prebuild": "node ./node_modules/octopus/scripts/run",
+    "postinstall": "node ./node_modules/octopus/scripts/run",
+    "prebuild": "node ./node_modules/octopus/scripts/run prebuild",
     "build": "node ./bin/build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
