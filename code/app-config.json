@@ -1,4 +1,5 @@
-{
+{   "theme":"default",
+    "appVersion":"1.0.1",
     "basePagesUrl": "/pages/",
     "profile": {
         "username": "PrivateSky",
@@ -12,8 +13,7 @@
             "component": "psk-page-loader",
             "exact": false,
             "indexed": true,
-            "pagePrefix": "?",
-            "historyType": "query"
+            "historyType": "browser"
         },
         "pages": [{
                 "name": "Home",
@@ -24,6 +24,11 @@
                 "name": "Edit",
                 "path": "/edit",
                 "pageSrc": "edit.html"
+            },
+            {
+                "name": "Share",
+                "path": "/share",
+                "pageSrc": "share.html"
             }
         ]
     }

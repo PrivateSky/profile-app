@@ -10,10 +10,10 @@ export default class ProfileController extends BindableController {
         this.profileModel = new ProfileModel();
         this.model = this.setModel(this.profileModel.toJSON());
         this.profileModel.hydrate(this.model).then(() => {
-            const isHomepage = window.location.search.indexOf('?home') !== -1;
+            const isHomepage = window.location.search.indexOf('home') !== -1;
 
             if (!this.model.name && isHomepage) {
-                return this.redirect('/?edit');
+                return this.redirect('/edit');
             }
         })
 
@@ -80,7 +80,7 @@ export default class ProfileController extends BindableController {
     _saveProfile() {
         this.profileModel.save(this.model)
             .then((result) => {
-                this.redirect('/?home');
+                this.redirect('/home');
             })
             .catch((err) => {
                 if (Array.isArray(err)) {
