@@ -1,9 +1,9 @@
-import BindableController from './base-controllers/BindableController.js';
+import ContainerController from '../../cardinal/controllers/base-controllers/ContainerController.js';
 import ProfileModel from './../models/ProfileModel.js';
 
-export default class ProfileController extends BindableController {
+export default class ProfileController extends ContainerController {
 
-    constructor(element) {
+    constructor(element, history) {
         super(element);
 
         this.feedbackEmitter = null;
@@ -13,7 +13,7 @@ export default class ProfileController extends BindableController {
             const isHomepage = window.location.search.indexOf('home') !== -1;
 
             if (!this.model.name && isHomepage) {
-                return this.redirect('/edit');
+                return this.history.push('/edit');
             }
         })
 
@@ -80,7 +80,7 @@ export default class ProfileController extends BindableController {
     _saveProfile() {
         this.profileModel.save(this.model)
             .then((result) => {
-                this.redirect('/home');
+                this.history.push('/home');
             })
             .catch((err) => {
                 if (Array.isArray(err)) {
@@ -113,32 +113,5 @@ export default class ProfileController extends BindableController {
             errMessage = err;
         }
         this.feedbackEmitter(errMessage, title, type);
-    }
-
-    /**
-     * Redirect to another url
-     *
-     * @param {string} url
-     */
-    redirect(url) {
-        this.render('psk-route-redirect', { url });
-    }
-
-    /**
-     * Render new child in the current element
-     * @param {string} tag
-     * @param {object} attributes
-     * @return {Element}
-     */
-    render(tag, attributes) {
-        attributes = attributes || {};
-        const el = document.createElement(tag);
-        for (const attr in attributes) {
-            const value = attributes[attr];
-            el.setAttribute(attr, value);
-        }
-
-        this._element.appendChild(el);
-        return el;
     }
 }
