@@ -5,7 +5,7 @@ export default class ProfileController extends ContainerController {
 
     constructor(element, history) {
         super(element);
-
+        this.history = history;
         this.feedbackEmitter = null;
         this.profileModel = new ProfileModel();
         this.model = this.setModel(this.profileModel.toJSON());
@@ -48,7 +48,7 @@ export default class ProfileController extends ContainerController {
      */
     _setAvatar(files) {
         // Render the list of files
-        const filesList = this._element.querySelector('#files-for-upload');
+        const filesList = this.element.querySelector('#files-for-upload');
         filesList.innerHTML = '';
 
         for (const f of files) {

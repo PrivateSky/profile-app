@@ -3975,7 +3975,7 @@ if (typeof config.workspace !== "undefined" && config.workspace !== "undefined")
 function boot() {
     const BootEngine = require("./BootEngine");
 
-    const bootter = new BootEngine(getSeed, getEDFS, initializeSwarmEngine, ["pskruntime.js", "virtualMQ.js", "edfsBar.js"], ["blockchain.js"]);
+    const bootter = new BootEngine(getSeed, getEDFS, initializeSwarmEngine, ["pskruntime.js", "pskWebServer.js", "edfsBar.js"], ["blockchain.js"]);
     bootter.boot(function (err, archive) {
         if (err) {
             console.log(err);
@@ -4622,7 +4622,7 @@ function SmartRemoteChannelPowerCord(communicationAddrs, receivingChannelName, z
 
         if (testIfZeroMQAvailable(typeof zeroMQAddress !== "undefined")) {
             //let's connect to zmq
-            const reqFactory = require("virtualmq").getVMQRequestFactory(receivingHost, zeroMQAddress);
+            const reqFactory = require("psk-webserver").getVMQRequestFactory(receivingHost, zeroMQAddress);
             reqFactory.receiveMessageFromZMQ($$.remote.base64Encode(receivingChannelName), opts.publicSignature, (...args) => {
                 console.log("zeromq connection established");
             }, (channelName, swarmSerialization) => {
@@ -4776,7 +4776,7 @@ module.exports = SmartRemoteChannelPowerCord;
 
 }).call(this,require("buffer").Buffer)
 
-},{"../../psk-http-client":"D:\\work\\git\\webcomponents\\web-wallet\\privatesky\\modules\\psk-http-client\\index.js","buffer":"buffer","swarmutils":"swarmutils","virtualmq":false}],"D:\\work\\git\\webcomponents\\web-wallet\\privatesky\\modules\\swarm-engine\\powerCords\\browser\\HostPowerCord.js":[function(require,module,exports){
+},{"../../psk-http-client":"D:\\work\\git\\webcomponents\\web-wallet\\privatesky\\modules\\psk-http-client\\index.js","buffer":"buffer","psk-webserver":false,"swarmutils":"swarmutils"}],"D:\\work\\git\\webcomponents\\web-wallet\\privatesky\\modules\\swarm-engine\\powerCords\\browser\\HostPowerCord.js":[function(require,module,exports){
 function HostPowerCord(parent){
 
     this.sendSwarm = function (swarmSerialization){
