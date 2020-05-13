@@ -1,25 +1,22 @@
 <psk-page title="Profile">
     <psk-container controller-name="ProfileController">
-        <psk-img src="@avatarUrl" width="128" height="128"></psk-img>
-
         <psk-form-row>
             <psk-text-input view-model="_name"></psk-text-input>
+        </psk-form-row>
+        <psk-form-row>
+            <psk-text-input view-model="_phone"></psk-text-input>
         </psk-form-row>
         <psk-form-row>
             <psk-text-input view-model="_email"></psk-text-input>
         </psk-form-row>
         <psk-form-row>
-            <psk-text-input view-model="_companyName"></psk-text-input>
+            <psk-text-input view-model="_birthday"></psk-text-input>
         </psk-form-row>
         <psk-form-row>
-            <psk-text-input view-model="_country"></psk-text-input>
+            <psk-text-input view-model="_address"></psk-text-input>
         </psk-form-row>
-
         <psk-form-row>
-            <ul id="files-for-upload">
-            </ul>
-            <psk-files-chooser label="Choose avatar" event-name="profile:choose-avatar"></psk-files-chooser>
-            <psk-button label="Upload" button-class="btn btn-info" event-name="profile:upload-avatar"></psk-button>
+            <psk-text-input view-model="_code"></psk-text-input>
         </psk-form-row>
 
         <p style="margin-top: 20px">

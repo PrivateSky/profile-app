@@ -1,12 +1,25 @@
 <psk-page title="Profile">
     <psk-container controller-name="ProfileController">
-        <div style="width: 200px; overflow: visible; margin: 0 auto;">
-            <psk-img src="@avatarUrl" width="128" height="128"></psk-img>
-            <psk-label label="@name"></psk-label>
-            <psk-label label="@email"></psk-label>
-            <psk-label label="@companyName"></psk-label>
-            <psk-label label="@country"></psk-label>
-
+        <div style="max-width: 600px; overflow: visible; margin: 0 auto;">
+            <psk-card title="@_name.label">
+                <psk-label label="@name"></psk-label>
+            </psk-card>
+            <psk-card title="@_phone.label">
+                <psk-label label="@phone"></psk-label>
+            </psk-card>
+            <psk-card title="@_email.label">
+                <psk-label label="@email"></psk-label>
+            </psk-card>
+            <psk-card title="@_birthday.label">
+                <psk-label label="@birthday"></psk-label>
+            </psk-card>
+            <psk-card title="@_address.label">
+                <psk-label label="@address"></psk-label>
+            </psk-card>
+            <psk-card title="@_code.label">
+                <psk-label label="@code"></psk-label>
+            </psk-card>
+            <psk-img width="100" src="assets/images/code.png"></psk-img>
             <p>
                 <psk-link page="Edit">Edit Profile</psk-link>
             </p>

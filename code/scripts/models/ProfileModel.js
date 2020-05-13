@@ -3,25 +3,41 @@ export default class ProfileModel {
     constructor() {
         this.data = {
             avatarUrl: '/assets/images/default-avatar.png',
-            name: '',
-            email: '',
-            companyName: '',
-            country: '',
+            name: 'John Led',
+            phone: '+34 684 24 84 63',
+            email: 'john.led@jhon.es',
+            birthday: '15/03/1986',
+            address: 'Madrid',
+            code: 'MDVMEB30409JN3GB',
             _name: {
                 label: 'Name',
-                name: 'name'
+                name: 'name',
+                value: "John Led"
             },
             _email: {
                 label: 'Email',
-                name: 'email'
+                name: 'email',
+                value: "john.led@john.es"
             },
-            _companyName: {
-                label: 'Company Name',
-                name: 'companyName'
+            _phone: {
+                label: 'Phone',
+                name: 'phone',
+                value: "+34 684 24 84 63"
             },
-            _country: {
-                label: 'Country',
-                name: 'country'
+            _birthday: {
+                label: 'Birthday',
+                name: 'birthday',
+                value: "15/03/1986"
+            },
+            _address: {
+                label: 'Address',
+                name: 'address',
+                value: "Madrid"
+            },
+            _code: {
+                label: 'Code',
+                name: 'code',
+                value: "MDVMEB30409JN3GB"
             }
         };
         this.cardinalModel = null;
@@ -36,16 +52,19 @@ export default class ProfileModel {
                 }
 
                 return response.json().then((data) => {
-                    model.avatarUrl = data.avatarUrl;
                     model.name = data.name;
+                    model.phone = data.phone;
                     model.email = data.email;
-                    model.companyName = data.companyName;
-                    model.country = data.country;
+                    model.birthday = data.birthday;
+                    model.address = data.address;
+                    model.code = data.code;
 
                     model._name.value = model.name;
                     model._email.value = model.email;
-                    model._companyName.value = model.companyName;
-                    model._country.value = model.country;
+                    model._phone.value = model.phone;
+                    model._birthday.value = model.birthday;
+                    model._address.value = model.address;
+                    model._code.value = model.code;
                 })
             })
             .catch((err) => {
@@ -116,23 +135,20 @@ export default class ProfileModel {
             errors.push('Email is required.')
         }
 
-        if (!data._companyName.value) {
-            errors.push('Company name is required.')
-        }
-
-        if (!data._country.value) {
-            errors.push('Country is required.')
+        if (!data._phone.value) {
+            errors.push('Phone is required.')
         }
 
         if (errors.length) {
             return Promise.reject(errors);
         }
 
-        this.data.avatarUrl = data.avatarUrl;
         this.data.name = data._name.value;
         this.data.email = data._email.value;
-        this.data.companyName = data._companyName.value;
-        this.data.country = data._country.value;
+        this.data.phone = data._phone.value;
+        this.data.birthday = data._birthday.value;
+        this.data.address = data._address.value;
+        this.data.code = data._code.value;
 
         const profileFile = new File([JSON.stringify(this.data)], "profile.json");
 
