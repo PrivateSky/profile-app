@@ -21,11 +21,13 @@ export default class widgetController extends ContainerController {
 		ProfileManager.get((err, profile)=>{
 			if(err){
 				profile = new Profile();
-			}else{
-				profile = new Profile(profile);
 			}
-
-			this.model.data = profile;
+console.log("Hereeeeee");
+			this.model.data = {
+				username: profile.name,
+				avatar: profile.avatar,
+				email: profile.email
+			};
 		});
 	}
 }

@@ -1,7 +1,9 @@
 <psk-container controller-name="widgetController">
-    <div style="max-width: 200px; overflow: visible; margin: 0 auto;">
-        <psk-img width="200" src="@data.avatar"></psk-img>
-        <psk-label label="@data.name"></psk-label>
-    </div>
+    <psk-user-profile user-info="@data"></psk-user-profile>
 </psk-container>
 
+<style>
+    body{
+        overflow: hidden!important;
+    }
+</style>
