@@ -29,6 +29,10 @@
                 "name": "Share",
                 "path": "/share",
                 "pageSrc": "share.html"
+            },
+            {
+                "name": "Widget",
+                "indexed": false
             }
         ]
     }
