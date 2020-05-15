@@ -1,6 +1,10 @@
 <psk-page title="Profile">
     <psk-container controller-name="viewProfileController">
         <div style="max-width: 600px; overflow: visible; margin: 0 auto;">
+            <div>
+                <psk-img width="200" src="@data.avatar"></psk-img>
+                <psk-files-chooser label="Update avatar" event-name="update-avatar"></psk-files-chooser>
+            </div>
             <psk-card title="@labels.name">
                 <psk-label label="@data.name"></psk-label>
             </psk-card>

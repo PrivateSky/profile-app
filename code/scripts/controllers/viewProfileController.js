@@ -37,5 +37,21 @@ export default class viewProfileController extends ContainerController {
 		this.on("edit-profile", (event)=>{
 			history.push("/edit");
 		});
+
+		this.on("update-avatar", (event)=>{
+			console.log("Updating avatar");
+			ProfileManager.uploadAvatar(event.data[0], (err, url) => {
+				if(err){
+					throw err;
+				}
+				this.model.data.avatar = url;
+				ProfileManager.update(this.model.data, (err)=>{
+					if(err){
+						throw err;
+					}
+				});
+				console.log(url);
+			});
+		});
 	}
 }

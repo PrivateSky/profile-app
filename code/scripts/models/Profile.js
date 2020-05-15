@@ -1,4 +1,5 @@
 export default class Profile {
+	avatar = "/assets/images/default-avatar.png";
 	name = "John Led";
 	phone = "+34 684 24 84 63";
 	email = "john.led@jhon.es";
