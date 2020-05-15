@@ -1,0 +1,27 @@
+<psk-page title="Edit Profile">
+    <psk-container controller-name="editProfileController">
+        <div>
+            <psk-card title="@form.name">
+                <psk-input view-model="data.name"></psk-input>
+            </psk-card>
+            <psk-card title="@form.phone">
+                <psk-input view-model="data.phone"></psk-input>
+            </psk-card>
+            <psk-card title="@form.email">
+                <psk-input view-model="data.email"></psk-input>
+            </psk-card>
+            <psk-card title="@form.birthday">
+                <psk-input view-model="data.birthday"></psk-input>
+            </psk-card>
+            <psk-card title="@form.address">
+                <psk-input view-model="data.address"></psk-input>
+            </psk-card>
+            <psk-card title="@form.code">
+                <psk-input view-model="data.code"></psk-input>
+            </psk-card>
+            <psk-button view-model="saveBtn"></psk-button>
+            <psk-button view-model="cancelBtn"></psk-button>
+        </div>
+        <psk-list-feedbacks></psk-list-feedbacks>
+    </psk-container>
+</psk-page>

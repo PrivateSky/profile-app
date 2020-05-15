@@ -18,12 +18,12 @@
         "pages": [{
                 "name": "Home",
                 "path": "/home",
-                "pageSrc": "index.html"
+                "pageSrc": "view-profile.html"
             },
             {
                 "name": "Edit",
                 "path": "/edit",
-                "pageSrc": "edit.html"
+                "pageSrc": "edit-profile.html"
             },
             {
                 "name": "Share",

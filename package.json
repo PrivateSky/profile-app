@@ -7,6 +7,7 @@
     "postinstall": "node ./node_modules/octopus/scripts/run",
     "prebuild": "node ./node_modules/octopus/scripts/run prebuild",
     "build": "node ./bin/build",
+    "postbuild": "node ./node_modules/octopus/scripts/run postbuild",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
