@@ -2,29 +2,31 @@
     <psk-container controller-name="viewProfileController">
         <div style="max-width: 600px; overflow: visible; margin: 0 auto;">
             <div>
-                <psk-img width="200" src="@data.avatar"></psk-img>
+                <psk-img width="200" src="@avatar"></psk-img>
                 <psk-files-chooser label="Update avatar" event-name="update-avatar"></psk-files-chooser>
             </div>
-            <psk-card title="@labels.name">
-                <psk-label label="@data.name"></psk-label>
-            </psk-card>
-            <psk-card title="@labels.phone">
-                <psk-label label="@data.phone"></psk-label>
-            </psk-card>
-            <psk-card title="@labels.email">
-                <psk-label label="@data.email"></psk-label>
-            </psk-card>
-            <psk-card title="@labels.birthday">
-                <psk-label label="@data.birthday"></psk-label>
-            </psk-card>
-            <psk-card title="@labels.address">
-                <psk-label label="@data.address"></psk-label>
-            </psk-card>
-            <psk-card title="@labels.code">
-                <psk-label label="@data.code"></psk-label>
-            </psk-card>
-            <psk-img width="100" src="assets/images/code.png"></psk-img>
-            <psk-button view-model="editBtn"></psk-button>
+            <psk-form>
+                <psk-form-row>
+                    <psk-text-input label="Name" value="@name" read-only="true"></psk-text-input>
+                </psk-form-row>
+                <psk-form-row>
+                    <psk-text-input label="Phone" value="@phone" read-only="true"></psk-text-input>
+                </psk-form-row>
+                <psk-form-row>
+                    <psk-text-input label="Email" value="@email" read-only="true"></psk-text-input>
+                </psk-form-row>
+                <psk-form-row>
+                    <psk-text-input label="Birthday" value="@birthday" read-only="true"></psk-text-input>
+                </psk-form-row>
+                <psk-form-row>
+                    <psk-text-input label="Address" value="@address" read-only="true"></psk-text-input>
+                </psk-form-row>
+                <psk-form-row>
+                    <psk-text-input label="Code" value="@code" read-only="true"></psk-text-input>
+                </psk-form-row>
+                <psk-img width="100" src="assets/images/code.png"></psk-img>
+                <psk-button label="Edit profile" event-name="edit-profile"></psk-button>
+            </psk-form>
         </div>
     </psk-container>
 </psk-page>

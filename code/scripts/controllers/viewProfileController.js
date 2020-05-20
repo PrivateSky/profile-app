@@ -4,26 +4,9 @@ import ProfileManager from './../services/ProfileManager.js';
 
 export default class viewProfileController extends ContainerController {
 
-	viewModel = {
-		editBtn: {
-			label: "Edit Profile",
-			eventName: "edit-profile"
-		},
-		labels:{
-			name: "Name",
-			phone: "Phone",
-			email: "Email",
-			birthday: "Birthday",
-			address: "Address",
-			code: "Code"
-		}
-	};
-
 	constructor(element, history) {
 		super(element);
-		console.log("here i'm...");
 
-		this.model = this.setModel(this.viewModel);
 		ProfileManager.get((err, profile)=>{
 			if(err){
 				profile = new Profile();
@@ -31,7 +14,7 @@ export default class viewProfileController extends ContainerController {
 				profile = new Profile(profile);
 			}
 
-			this.model.data = profile;
+			this.model = this.setModel(profile);
 		});
 
 		this.on("edit-profile", (event)=>{
@@ -44,8 +27,8 @@ export default class viewProfileController extends ContainerController {
 				if(err){
 					throw err;
 				}
-				this.model.data.avatar = url;
-				ProfileManager.update(this.model.data, (err)=>{
+				this.model.avatar = url;
+				ProfileManager.update(this.model, (err)=>{
 					if(err){
 						throw err;
 					}

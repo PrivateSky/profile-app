@@ -4,49 +4,29 @@ import ProfileManager from './../services/ProfileManager.js';
 
 export default class editProfileController extends ContainerController {
 
-	viewModel = {
-		saveBtn: {
-			label: "Save",
-			eventName: "save-profile"
-		},
-		cancelBtn: {
-			label: "Cancel",
-			eventName: "cancel"
-		},
-		form:{
-			name: "Name",
-			phone: "Phone",
-			email: "Email",
-			birthday: "Birthday",
-			address: "Address",
-			code: "Code"
-		},
-		data:{}
-	};
-
 	buildViewModel(profile){
-		let data = {};
+		/*let data = {};
 		for(let prop in profile){
 			data[prop] = {
 				value: profile[prop]
 			}
 		}
-		this.model.data = data;
+		this.model = this.setModel(data);*/
+		this.model = this.setModel(profile);
 	}
 
 	extractProfile(data){
-		let profile = new Profile();
+		/*let profile = new Profile();
 		for(let prop in data){
 			profile[prop] = data[prop].value;
 		}
-		return profile;
+		return profile;*/
+		return data;
 	}
 
 	constructor(element, history) {
 		super(element);
 
-		this.model = this.setModel(this.viewModel);
-		console.log("Editing...");
 		ProfileManager.get((err, profile)=>{
 			if(err){
 				profile = new Profile();
@@ -54,7 +34,6 @@ export default class editProfileController extends ContainerController {
 				profile = new Profile(profile);
 			}
 
-			//this.model.data = profile;
 			this.buildViewModel(profile);
 		});
 
@@ -67,8 +46,8 @@ export default class editProfileController extends ContainerController {
 		});
 
 		this.on("save-profile", (event)=>{
-			console.log("Start saving");
-			let profile = this.extractProfile(this.model.data);
+			debugger
+			let profile = this.extractProfile(this.model);
 			let validationResult = profile.validate();
 			if(Array.isArray(validationResult)){
 				for(let i = 0; i<validationResult.length; i++){
