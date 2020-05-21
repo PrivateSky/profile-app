@@ -1,13 +1,12 @@
 import ContainerController from '../../cardinal/controllers/base-controllers/ContainerController.js';
 import Profile from './../models/Profile.js';
-import ProfileManager from './../services/ProfileManager.js';
 
 export default class viewProfileController extends ContainerController {
 
 	constructor(element, history) {
 		super(element);
 
-		ProfileManager.get((err, profile)=>{
+		this.requestManager.download("/data/profile.json", "json", (err, profile)=>{
 			if(err){
 				profile = new Profile();
 			}else{
@@ -23,17 +22,20 @@ export default class viewProfileController extends ContainerController {
 
 		this.on("update-avatar", (event)=>{
 			console.log("Updating avatar");
-			ProfileManager.uploadAvatar(event.data[0], (err, url) => {
+
+			const file = event.data[0];
+			const queryString = `path=/data&filename=${file.name}&maxSize=16m&allowedTypes=image/jpeg,image/png,image/gif`;
+			this.requestManager.upload(queryString, file, (err, url) => {
 				if(err){
 					throw err;
 				}
-				this.model.avatar = url;
-				ProfileManager.update(this.model, (err)=>{
+				this.model.avatar = '/download'+url;
+				const queryString = 'path=/data&filename=profile.json';
+				this.requestManager.upload(queryString, JSON.stringify(this.model), (err)=>{
 					if(err){
 						throw err;
 					}
 				});
-				console.log(url);
 			});
 		});
 	}

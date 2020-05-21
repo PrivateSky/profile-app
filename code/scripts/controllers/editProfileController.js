@@ -1,33 +1,20 @@
 import ContainerController from '../../cardinal/controllers/base-controllers/ContainerController.js';
 import Profile from './../models/Profile.js';
-import ProfileManager from './../services/ProfileManager.js';
 
 export default class editProfileController extends ContainerController {
 
 	buildViewModel(profile){
-		/*let data = {};
-		for(let prop in profile){
-			data[prop] = {
-				value: profile[prop]
-			}
-		}
-		this.model = this.setModel(data);*/
 		this.model = this.setModel(profile);
 	}
 
 	extractProfile(data){
-		/*let profile = new Profile();
-		for(let prop in data){
-			profile[prop] = data[prop].value;
-		}
-		return profile;*/
 		return data;
 	}
 
 	constructor(element, history) {
 		super(element);
 
-		ProfileManager.get((err, profile)=>{
+		this.requestManager.download("/data/profile.json",  "json", (err, profile)=>{
 			if(err){
 				profile = new Profile();
 			}else{
@@ -57,7 +44,7 @@ export default class editProfileController extends ContainerController {
 				return;
 			}
 
-			ProfileManager.update(profile, (err)=>{
+			this.requestManager.upload('path=/data&filename=profile.json', JSON.stringify(profile), (err)=>{
 				if(err){
 					this.showError(err, "Profile update failed.");
 					return;
