@@ -3,12 +3,9 @@ import Profile from './../models/Profile.js';
 
 export default class widgetController extends ContainerController {
 
-	viewModel = {};
-
 	constructor(element, history) {
 		super(element);
 
-		this.model = this.setModel(this.viewModel);
 		this.refreshProfile();
 
 		setInterval(()=>{
@@ -22,11 +19,14 @@ export default class widgetController extends ContainerController {
 				profile = new Profile();
 			}
 
-			this.model.data = {
-				username: profile.name,
-				avatar: profile.avatar,
-				email: profile.email
-			};
+			this.model = this.setModel(
+				{
+					profile:{
+						username: profile.name,
+						avatar: profile.avatar,
+						email: profile.email
+					}
+				});
 		});
 	}
 }

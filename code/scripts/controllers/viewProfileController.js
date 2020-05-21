@@ -29,7 +29,7 @@ export default class viewProfileController extends ContainerController {
 					throw err;
 				}
 				this.model.avatar = '/download'+url;
-				this.requestManager.storeData("/data/profile.json", JSON.stringify(this.model), (err)=>{
+				this.storage.storeData("/data/profile.json", JSON.stringify(this.model), (err)=>{
 					if(err){
 						throw err;
 					}
