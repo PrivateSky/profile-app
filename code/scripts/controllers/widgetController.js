@@ -5,28 +5,25 @@ export default class widgetController extends ContainerController {
 
 	constructor(element, history) {
 		super(element);
-
+		this.model = this.setModel({});
 		this.refreshProfile();
 
-		setInterval(()=>{
+		setInterval(() => {
 			this.refreshProfile();
 		}, 2000);
 	}
 
-	refreshProfile(){
- 		this.storage.getData("/data/profile.json", "json", (err, profile)=>{
-			if(err){
+	refreshProfile() {
+		this.storage.getData("/data/profile.json", "json", (err, profile) => {
+			if (err) {
 				profile = new Profile();
 			}
 
-			this.model = this.setModel(
-				{
-					profile:{
-						username: profile.name,
-						avatar: profile.avatar,
-						email: profile.email
-					}
-				});
+			this.model.profile = {
+				username: profile.name,
+				avatar: profile.avatar,
+				email: profile.email
+			};
 		});
 	}
 }
