@@ -1,6 +1,5 @@
 import ContainerController from '../../cardinal/controllers/base-controllers/ContainerController.js';
 import Profile from './../models/Profile.js';
-import ProfileManager from './../services/ProfileManager.js';
 
 export default class widgetController extends ContainerController {
 
@@ -18,11 +17,11 @@ export default class widgetController extends ContainerController {
 	}
 
 	refreshProfile(){
-		ProfileManager.get((err, profile)=>{
+ 		this.storage.getData("/data/profile.json", "json", (err, profile)=>{
 			if(err){
 				profile = new Profile();
 			}
-console.log("Hereeeeee");
+
 			this.model.data = {
 				username: profile.name,
 				avatar: profile.avatar,
