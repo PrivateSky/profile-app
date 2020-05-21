@@ -33,7 +33,6 @@ export default class editProfileController extends ContainerController {
 		});
 
 		this.on("save-profile", (event)=>{
-			debugger
 			let profile = this.extractProfile(this.model);
 			let validationResult = profile.validate();
 			if(Array.isArray(validationResult)){
