@@ -2,16 +2,16 @@
     <psk-container controller-name="editProfileController">
         <psk-form>
             <psk-form-row>
-                <psk-text-input label="Name" value="@name"></psk-text-input>
+                <psk-text-input label="Name" value="@name" required></psk-text-input>
             </psk-form-row>
             <psk-form-row>
-                <psk-text-input label="Phone" value="@phone"></psk-text-input>
+                <psk-text-input label="Phone" value="@phone" required></psk-text-input>
             </psk-form-row>
             <psk-form-row>
-                <psk-text-input label="Email" value="@email"></psk-text-input>
+                <psk-text-input label="Email" value="@email" required></psk-text-input>
             </psk-form-row>
             <psk-form-row>
-                <psk-text-input label="Birthday" value="@birthday"></psk-text-input>
+                <psk-text-input label="Birthday" value="@birthday" ></psk-text-input>
             </psk-form-row>
             <psk-form-row>
                 <psk-text-input label="Address" value="@address"></psk-text-input>
@@ -19,7 +19,7 @@
             <psk-form-row>
                 <psk-text-input label="Code" value="@code"></psk-text-input>
             </psk-form-row>
-            <psk-button label="Save" event-name="save-profile"></psk-button>
+            <psk-button label="Save" type="submit" event-name="save-profile"></psk-button>
             <psk-button label="Cancel" event-name="cancel"></psk-button>
         </psk-form>
         <psk-list-feedbacks></psk-list-feedbacks>
