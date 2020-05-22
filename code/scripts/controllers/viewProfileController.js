@@ -6,7 +6,7 @@ export default class viewProfileController extends ContainerController {
 	constructor(element, history) {
 		super(element);
 
-		this.storage.getData("/data/profile.json", "json", (err, profile)=>{
+		this.DSUStorage.getItem("/data/profile.json", "json", (err, profile)=>{
 			if(err){
 				profile = new Profile();
 			}else{
@@ -24,12 +24,12 @@ export default class viewProfileController extends ContainerController {
 			console.log("Updating avatar");
 
 			const file = event.data[0];
-			this.storage.storeData(`/data/avatars/${file.name}`, file, (err, url) => {
+			this.DSUStorage.setItem(`/data/avatars/${file.name}`, file, (err, url) => {
 				if(err){
 					throw err;
 				}
 				this.model.avatar = '/download'+url;
-				this.storage.storeData("/data/profile.json", JSON.stringify(this.model), (err)=>{
+				this.DSUStorage.setItem("/data/profile.json", JSON.stringify(this.model), (err)=>{
 					if(err){
 						throw err;
 					}
