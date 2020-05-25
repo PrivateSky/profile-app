@@ -2,15 +2,6 @@ import ContainerController from '../../cardinal/controllers/base-controllers/Con
 import Profile from './../models/Profile.js';
 
 export default class editProfileController extends ContainerController {
-
-	buildViewModel(profile){
-		this.model = this.setModel(profile);
-	}
-
-	extractProfile(data){
-		return data;
-	}
-
 	constructor(element, history) {
 		super(element);
 
@@ -21,7 +12,7 @@ export default class editProfileController extends ContainerController {
 				profile = new Profile(profile);
 			}
 
-			this.buildViewModel(profile);
+			this.setModel(profile);
 		});
 
 		this.on('openFeedback', (e) => {
@@ -33,7 +24,7 @@ export default class editProfileController extends ContainerController {
 		});
 
 		this.on("save-profile", (event)=>{
-			let profile = this.extractProfile(this.model);
+			let profile = this.model;
 			let validationResult = profile.validate();
 			if(Array.isArray(validationResult)){
 				for(let i = 0; i<validationResult.length; i++){
