@@ -6,7 +6,7 @@ export default class viewProfileController extends ContainerController {
 	constructor(element, history) {
 		super(element);
 
-		this.DSUStorage.getItem("/data/profile.json", "json", (err, profile)=>{
+		this.DSUStorage.getObject("/data/profile.json", (err, profile)=>{
 			if(err){
 				profile = new Profile();
 			}else{
@@ -29,7 +29,7 @@ export default class viewProfileController extends ContainerController {
 					throw err;
 				}
 				this.model.avatar = '/download'+url;
-				this.DSUStorage.setItem("/data/profile.json", JSON.stringify(this.model), (err)=>{
+				this.DSUStorage.setObject("/data/profile.json", this.model, (err)=>{
 					if(err){
 						throw err;
 					}

@@ -14,7 +14,7 @@ export default class widgetController extends ContainerController {
 	}
 
 	refreshProfile() {
-		this.DSUStorage.getItem("/data/profile.json", "json", (err, profile) => {
+		this.DSUStorage.getObject("/data/profile.json", (err, profile) => {
 			if (err) {
 				profile = new Profile();
 			}

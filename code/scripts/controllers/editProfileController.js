@@ -5,7 +5,7 @@ export default class editProfileController extends ContainerController {
 	constructor(element, history) {
 		super(element);
 
-		this.DSUStorage.getItem("/data/profile.json",  "json", (err, profile)=>{
+		this.DSUStorage.getObject("/data/profile.json", (err, profile)=>{
 			if(err){
 				profile = new Profile();
 			}else{
@@ -34,7 +34,7 @@ export default class editProfileController extends ContainerController {
 				return;
 			}
 
-			this.DSUStorage.setItem('/data/profile.json', JSON.stringify(profile), (err)=>{
+			this.DSUStorage.setObject('/data/profile.json', profile, (err)=>{
 				if(err){
 					this.showError(err, "Profile update failed.");
 					return;
