@@ -23,6 +23,11 @@ export default class editProfileController extends ContainerController {
 			history.push("/home");
 		});
 
+		this.on("update-avatar", (event) => {
+			this.avatar = event.data;
+
+		});
+
 		this.on("save-profile", (event)=>{
 			let profile = this.model;
 			let validationResult = profile.validate();
@@ -34,12 +39,19 @@ export default class editProfileController extends ContainerController {
 				return;
 			}
 
-			this.DSUStorage.setObject('/data/profile.json', profile, (err)=>{
-				if(err){
-					this.showError(err, "Profile update failed.");
-					return;
+			this.DSUStorage.setItem(`/data/avatars/${profile.name}/image.png`, this.avatar, (err, url) => {
+				if (err) {
+					throw err;
 				}
-				history.push("/home");
+				this.model.avatar = '/download' + url;
+				this.DSUStorage.setObject("/data/profile.json", profile, (err) => {
+					if (err) {
+						this.showError(err, "Profile update failed.");
+						return;
+					}
+
+					history.push("/home");
+				});
 			});
 		});
 	}
