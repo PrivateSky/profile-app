@@ -20,12 +20,12 @@ export default class editProfileController extends ContainerController {
 		});
 
 		this.on("cancel", (event)=>{
-			history.push("/home");
+			history.push("/view-profile");
 		});
 
 		this.on("update-avatar", (event) => {
+			console.log("Updating avatar");
 			this.avatar = event.data;
-
 		});
 
 		this.on("save-profile", (event)=>{
@@ -36,10 +36,11 @@ export default class editProfileController extends ContainerController {
 					let err = validationResult[i];
 					this.showError(err);
 				}
+
 				return;
 			}
 
-			this.DSUStorage.setItem(`/data/avatars/${profile.name}/image.png`, this.avatar, (err, url) => {
+			this.DSUStorage.setItem(`/data/avatars/image.png`, this.avatar, (err, url) => {
 				if (err) {
 					throw err;
 				}
@@ -50,7 +51,8 @@ export default class editProfileController extends ContainerController {
 						return;
 					}
 
-					history.push("/home");
+					console.log("About to view profile");
+					history.push("/view-profile");
 				});
 			});
 		});
