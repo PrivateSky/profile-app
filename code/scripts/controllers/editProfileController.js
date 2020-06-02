@@ -20,11 +20,10 @@ export default class editProfileController extends ContainerController {
 		});
 
 		this.on("cancel", (event)=>{
-			history.push("/view-profile");
+			history.push("/home");
 		});
 
 		this.on("update-avatar", (event) => {
-			console.log("Updating avatar");
 			this.avatar = event.data;
 		});
 
@@ -51,8 +50,7 @@ export default class editProfileController extends ContainerController {
 						return;
 					}
 
-					console.log("About to view profile");
-					history.push("/view-profile");
+					history.push("/home");
 				});
 			});
 		});
