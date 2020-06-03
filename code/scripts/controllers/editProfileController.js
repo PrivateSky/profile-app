@@ -56,7 +56,7 @@ export default class editProfileController extends ContainerController {
                     if (err) {
                         throw err;
                     }
-                    profile.avatar = '/download' + url;
+                    profile.avatar = '/download' + url + '?' + Math.random();
                     __updateProfile();
                 });
             } else {
