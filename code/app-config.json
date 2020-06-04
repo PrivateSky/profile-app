@@ -33,6 +33,14 @@
             {
                 "name": "Widget",
                 "indexed": false
+            },
+            {
+                "name": "Add Contact",
+                "indexed": false
+            },
+            {
+                "name": "Contacts",
+                "indexed": false
             }
         ]
     }
