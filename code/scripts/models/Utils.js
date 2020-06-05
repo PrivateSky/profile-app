@@ -1,7 +1,4 @@
-export default class Utils {
-    constructor() {
-    }
-
+export default {
     generateID(length) {
         let result = '';
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -12,3 +9,5 @@ export default class Utils {
         return result;
     }
 }
+
+

@@ -1,11 +1,11 @@
 import ContainerController from '../../cardinal/controllers/base-controllers/ContainerController.js';
 import Profile from './../models/Profile.js';
-
+const PROFILE_PATH = '/app/data/profile.json';
 export default class editProfileController extends ContainerController {
     constructor(element, history) {
         super(element);
 
-        this.DSUStorage.getObject("/data/profile.json", (err, profile) => {
+        this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
             if (err) {
                 profile = new Profile();
             } else {
@@ -40,7 +40,7 @@ export default class editProfileController extends ContainerController {
             }
 
             const __updateProfile = () => {
-                this.DSUStorage.setObject("/data/profile.json", profile, (err) => {
+                this.DSUStorage.setObject(PROFILE_PATH, profile, (err) => {
                     if (err) {
                         this.showError(err, "Profile update failed.");
                         return;

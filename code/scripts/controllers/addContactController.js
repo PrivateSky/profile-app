@@ -1,41 +1,52 @@
 import ContainerController from '../../cardinal/controllers/base-controllers/ContainerController.js';
 import Contact from '../models/Contact.js';
+import Organization from '../models/Organization.js';
 
-function generateID(length) {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-}
-
+const PROFILE_PATH = '/app/data/profile.json';
+const STORAGE_LOCATION = '/code/data/';
 export default class addContactController extends ContainerController {
     constructor(element, history) {
         super(element);
 
         this.setModel(new Contact());
 
+        this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
+            this.DSUStorage.getObject(`${STORAGE_LOCATION}${profile.id}/organizations.json`, (err, organizations) => {
+                this.model.organization = {
+                    label: "Select an organization",
+                    placeholder: "Please select one option...",
+                    required: true,
+                    options: []
+                };
+                organizations.forEach(organization => {
+                    const org = new Organization(organization);
+                    this.model.organization.options.push(org.generateViewModel());
+                });
+
+            });
+        });
+
         this.on('openFeedback', (e) => {
             this.feedbackEmitter = e.detail;
         });
 
-        this.on("save-contact", (event) => {
-            let contact = this.model;
-            let validationResult = contact.validate();
-            if (Array.isArray(validationResult)) {
-                for (let i = 0; i < validationResult.length; i++) {
-                    let err = validationResult[i];
-                    this.showError(err);
-                }
-                return;
+
+        this.on("save-contact", this.saveContact);
+    }
+
+    saveContact (event) {
+        let contact = this.model;
+        let validationResult = contact.validate();
+        if (Array.isArray(validationResult)) {
+            for (let i = 0; i < validationResult.length; i++) {
+                let err = validationResult[i];
+                this.showError(err);
             }
-            let contacts = [];
-            if (typeof this.profileID === "undefined") {
-                this.profileID = generateID(10);
-            }
-            this.DSUStorage.getObject(`/data/${this.profileID}/contacts.json`, (err, contactsHistory) => {
+            return;
+        }
+        let contacts = [];
+        this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
+            this.DSUStorage.getObject(`${STORAGE_LOCATION}${profile.id}/contacts.json`, (err, contactsHistory) => {
                 if (err) {
 
                 } else {
@@ -43,19 +54,25 @@ export default class addContactController extends ContainerController {
                 }
 
                 contacts.push(contact);
-                this.DSUStorage.setObject(`/data/${this.profileID}/contacts.json`, contacts, (err) => {
-                    if (err) {
-                        throw err;
-                    }
-
-                    history.push({
-                        pathname: '/contacts',
-                        state: {
-                            profileID: this.profileID
-                        }
-                    });
+                this.DSUStorage.setObject(`${STORAGE_LOCATION}${profile.id}/contacts.json`, contacts, (err) => {
+                    history.push('/contacts');
                 });
             });
         });
+    };
+
+    showError(err, title, type) {
+        let errMessage;
+        title = title ? title : 'Validation Error';
+        type = type ? type : 'alert-danger';
+
+        if (err instanceof Error) {
+            errMessage = err.message;
+        } else if (typeof err === 'object') {
+            errMessage = err.toString();
+        } else {
+            errMessage = err;
+        }
+        this.feedbackEmitter(errMessage, title, type);
     }
 }

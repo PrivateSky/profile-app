@@ -1,3 +1,4 @@
+import Utils from "./Utils.js";
 export default class Profile {
 	avatar = "/assets/images/default-avatar.png";
 	name = "John Led";
@@ -12,6 +13,10 @@ export default class Profile {
 			for(let prop in profile){
 				this[prop] = profile[prop];
 			}
+		}
+
+		if (typeof this.id === "undefined") {
+			this.id = Utils.generateID(16);
 		}
 	}
 

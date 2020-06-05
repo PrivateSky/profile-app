@@ -1,12 +1,12 @@
 import ContainerController from '../../cardinal/controllers/base-controllers/ContainerController.js';
 import Profile from './../models/Profile.js';
-
+const PROFILE_PATH = '/app/data/profile.json';
 export default class viewProfileController extends ContainerController {
 
     constructor(element, history) {
         super(element);
 
-        this.DSUStorage.getObject("/data/profile.json", (err, profile) => {
+        this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
             if (err) {
                 profile = new Profile();
             } else {

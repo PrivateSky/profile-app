@@ -1,6 +1,6 @@
 import ContainerController from '../../cardinal/controllers/base-controllers/ContainerController.js';
 import Profile from './../models/Profile.js';
-
+const PROFILE_PATH = '/app/data/profile.json';
 export default class widgetController extends ContainerController {
 
 	constructor(element, history) {
@@ -14,7 +14,7 @@ export default class widgetController extends ContainerController {
 	}
 
 	refreshProfile() {
-		this.DSUStorage.getObject("/data/profile.json", (err, profile) => {
+		this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
 			if (err) {
 				profile = new Profile();
 			}
