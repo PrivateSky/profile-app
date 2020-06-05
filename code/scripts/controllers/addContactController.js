@@ -30,36 +30,35 @@ export default class addContactController extends ContainerController {
             this.feedbackEmitter = e.detail;
         });
 
-
-        this.on("save-contact", this.saveContact);
-    }
-
-    saveContact (event) {
-        let contact = this.model;
-        let validationResult = contact.validate();
-        if (Array.isArray(validationResult)) {
-            for (let i = 0; i < validationResult.length; i++) {
-                let err = validationResult[i];
-                this.showError(err);
-            }
-            return;
-        }
-        let contacts = [];
-        this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
-            this.DSUStorage.getObject(`${STORAGE_LOCATION}${profile.id}/contacts.json`, (err, contactsHistory) => {
-                if (err) {
-
-                } else {
-                    contacts = contactsHistory;
+        const saveContact = (event) => {
+            let contact = this.model;
+            let validationResult = contact.validate();
+            if (Array.isArray(validationResult)) {
+                for (let i = 0; i < validationResult.length; i++) {
+                    let err = validationResult[i];
+                    this.showError(err);
                 }
+                return;
+            }
+            let contacts = [];
+            this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
+                this.DSUStorage.getObject(`${STORAGE_LOCATION}${profile.id}/contacts.json`, (err, contactsHistory) => {
+                    if (err) {
 
-                contacts.push(contact);
-                this.DSUStorage.setObject(`${STORAGE_LOCATION}${profile.id}/contacts.json`, contacts, (err) => {
-                    history.push('/contacts');
+                    } else {
+                        contacts = contactsHistory;
+                    }
+
+                    contacts.push(contact);
+                    this.DSUStorage.setObject(`${STORAGE_LOCATION}${profile.id}/contacts.json`, contacts, (err) => {
+                        history.push('/contacts');
+                    });
                 });
             });
-        });
-    };
+        };
+        this.on("save-contact", saveContact);
+    }
+
 
     showError(err, title, type) {
         let errMessage;
