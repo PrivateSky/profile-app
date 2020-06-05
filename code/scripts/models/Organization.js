@@ -30,9 +30,11 @@ export default class Organization {
         if (!this.name) {
             errors.push('Name is required.');
         }
-
+        if (!this.id) {
+            errors.push('Id is required.');
+        }
         if (!this.country) {
-            errors.push('OrganizationID is required.');
+            errors.push('Country is required.');
         }
 
         return errors.length === 0 ? true : errors;

@@ -41,6 +41,14 @@
             {
                 "name": "Contacts",
                 "indexed": false
+            },
+            {
+                "name": "Add Organization",
+                "indexed": false
+            },
+            {
+                "name": "Organizations",
+                "indexed": false
             }
         ]
     }
