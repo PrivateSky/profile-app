@@ -2,15 +2,22 @@
     <psk-container controller-name="addContactController">
         <psk-form>
             <psk-form-row>
-                <psk-text-input label="ID" value="@id" read-only="true"></psk-text-input>
+                <psk-select view-model="@organizations" value="@organization"></psk-select>
             </psk-form-row>
             <psk-form-row>
-                <psk-text-input label="Name" value="@name" required></psk-text-input>
+                <psk-select view-model="@countries" value="@country"></psk-select>
             </psk-form-row>
             <psk-form-row>
-                <psk-select view-model="@organization" value="@organizationID" required></psk-select>
+                <psk-img-input src="@logo" event-name="update-logo" label="Logo" required></psk-img-input>
             </psk-form-row>
-            <psk-button label="Save Contact" type="submit" event-name="save-contact"></psk-button>
+            <psk-form-row>
+                <psk-text-input label="Contact Code" value="@code" required></psk-text-input>
+            </psk-form-row>
+            <psk-form-row columns="2" layout="xs=[2,10] s=[2,10] m=[2,10] xl=[2,10]">
+                <psk-label label="QR Code"></psk-label>
+                <psk-img width="100" src="assets/images/code.png"></psk-img>
+            </psk-form-row>
+            <psk-button label="SAVE" type="submit" event-name="save-contact"></psk-button>
         </psk-form>
         <psk-list-feedbacks></psk-list-feedbacks>
     </psk-container>

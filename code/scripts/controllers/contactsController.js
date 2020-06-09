@@ -1,6 +1,8 @@
 import ContainerController from "../../cardinal/controllers/base-controllers/ContainerController.js";
+
 const PROFILE_PATH = '/app/data/profile.json';
 const STORAGE_LOCATION = '/code/data/';
+
 export default class contactsController extends ContainerController {
     constructor(element, history) {
         super(element);
@@ -19,8 +21,10 @@ export default class contactsController extends ContainerController {
                 }
 
                 this.model.contacts = contactsHistory;
+
             });
         });
+
         this.on("add-contact", (event) => {
             history.push("/add-contact");
         });
