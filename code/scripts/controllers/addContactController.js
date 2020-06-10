@@ -1,38 +1,48 @@
 import ContainerController from '../../cardinal/controllers/base-controllers/ContainerController.js';
 import Contact from '../models/Contact.js';
 import Countries from "../models/Countries.js";
+import Organizations from "../models/Organizations.js";
 
 const PROFILE_PATH = '/app/data/profile.json';
 const STORAGE_LOCATION = '/code/data/';
-const organizations = [
-    {
-        label: "Cantonal Agency of Control of pharmacentric products (ZH)",
-        value: "Cantonal Agency of Control of pharmacentric products (ZH)"
-    },
-    {
-        label: "National Medicine and Medication",
-        value: "National Medicine and Medication"
-    }
-];
 
 export default class addContactController extends ContainerController {
     constructor(element, history) {
         super(element);
 
-        this.setModel(new Contact());
-        this.model.organizations = {
-            label: "Organization",
-            placeholder: "Select an organization",
-            required: true,
-            options: organizations
-        };
+        this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
+            this.profile = profile;
+            this.DSUStorage.getObject(`${STORAGE_LOCATION}${this.profile.id}/contact.json`, (err, contact) => {
+                if (err || contact === {}) {
+                    contact = new Contact();
+                } else {
+                    contact = new Contact(contact);
+                }
 
-        this.model.countries = {
-            label: "Country",
-            placeholder: "Select a country",
-            required: true,
-            options: Countries.getListAsVM()
-        };
+                this.setModel(contact);
+
+                this.model.organizations = {
+                    label: "Organization",
+                    placeholder: "Select an organization",
+                    options: Organizations.getListAsVM()
+                };
+
+                this.model.countries = {
+                    label: "Country",
+                    placeholder: "Select a country",
+                    options: Countries.getListAsVM()
+                };
+
+                if (typeof this.model.organization !== "undefined") {
+                    this.model.organizations.placeholder = Organizations.getOrganization(this.model.organization);
+                }
+                if (typeof this.model.country !== "undefined") {
+                    this.model.countries.placeholder = Countries.getCountry(this.model.country);
+                }
+
+            });
+        });
+
         this.on('openFeedback', (e) => {
             this.feedbackEmitter = e.detail;
         });
@@ -50,41 +60,41 @@ export default class addContactController extends ContainerController {
             }
             let contacts = [];
 
-            const __updateContact = () => {
-                this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
-                    this.DSUStorage.getObject(`${STORAGE_LOCATION}${profile.id}/contacts.json`, (err, contactsHistory) => {
-                        if (err) {
+            this.DSUStorage.getObject(`${STORAGE_LOCATION}${this.profile.id}/contacts.json`, (err, contactsHistory) => {
+                if (err) {
 
-                        } else {
-                            contacts = contactsHistory;
-                        }
+                } else {
+                    contacts = contactsHistory;
+                }
 
 
-                        contact.country = Countries.getCountry(contact.country);
-                        contacts.push(contact);
-                        this.DSUStorage.setObject(`${STORAGE_LOCATION}${profile.id}/contacts.json`, contacts, (err) => {
-                            history.push('/contacts');
-                        });
+                contact.country = Countries.getCountry(contact.country);
+                contact.organization = Organizations.getOrganization(contact.organization);
+                contacts.push(contact);
+                this.DSUStorage.setObject(`${STORAGE_LOCATION}${this.profile.id}/contacts.json`, contacts, (err) => {
+                    this.DSUStorage.setObject(`${STORAGE_LOCATION}${this.profile.id}/contact.json`, {}, (err) => {
+                        history.push('/contacts');
                     });
                 });
-            };
-
-            if (typeof this.logo !== "undefined") {
-                this.DSUStorage.setItem(`/data/${contact.id}/image.png`, this.logo, (err, url) => {
-                    if (err) {
-                        throw err;
-                    }
-                    contact.logo = '/download' + url + '?' + Math.random();
-                    __updateContact();
-                });
-            } else {
-                __updateContact();
-            }
+            });
         };
         this.on("save-contact", saveContact);
 
-        this.on("update-logo", (event) => {
-            this.logo = event.data;
+        this.on("attach", (event) => {
+            const file = event.data[0];
+
+            this.DSUStorage.setItem(`/data/${this.model.id}/image.png`, file, (err, url) => {
+                if (err) {
+                    throw err;
+                }
+                this.model.logo = '/download' + url;
+            });
+        });
+
+        this.on('scan-code', (event) => {
+            this.DSUStorage.setObject(`${STORAGE_LOCATION}${this.profile.id}/contact.json`, this.model, (err) => {
+                history.push('/scan-code');
+            });
         });
     }
 

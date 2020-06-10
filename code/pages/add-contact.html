@@ -7,15 +7,16 @@
             <psk-form-row>
                 <psk-select view-model="@countries" value="@country"></psk-select>
             </psk-form-row>
-            <psk-form-row>
-                <psk-img-input src="@logo" event-name="update-logo" label="Logo" required></psk-img-input>
+            <psk-form-row columns="2" layout="xs=[2,1] s=[2,1] m=[2,1] xl=[2,1]">
+                <psk-files-chooser label="Attach" event-name="attach"></psk-files-chooser>
+                <psk-img src="@logo" width="45" height="45" label="Logo"></psk-img>
             </psk-form-row>
             <psk-form-row>
-                <psk-text-input label="Contact Code" value="@code" required></psk-text-input>
+                <psk-text-input label="Contact Code" value="@code"></psk-text-input>
             </psk-form-row>
             <psk-form-row columns="2" layout="xs=[2,10] s=[2,10] m=[2,10] xl=[2,10]">
                 <psk-label label="QR Code"></psk-label>
-                <psk-img width="100" src="assets/images/code.png"></psk-img>
+                <psk-button label="Scan" type="submit" event-name="scan-code"></psk-button>
             </psk-form-row>
             <psk-button label="SAVE" type="submit" event-name="save-contact"></psk-button>
         </psk-form>

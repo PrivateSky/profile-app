@@ -1,6 +1,6 @@
 import Utils from "./Utils.js";
 export default class Contact {
-    logo = '/assets/images/default-avatar.png';
+    logo = '/assets/images/default-logo.png';
     organization;
     country;
     constructor(contact) {

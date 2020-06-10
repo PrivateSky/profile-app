@@ -41,6 +41,10 @@
             {
                 "name": "Contacts",
                 "indexed": false
+            },
+            {
+                "name": "Scan Code",
+                "indexed": false
             }
         ]
     }

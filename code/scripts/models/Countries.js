@@ -1,10 +1,10 @@
 const countries = [
-    {id: "RO", name: "Romania"},
     {id: "DE", name: "Germany"},
-    {id: "USA", name: "United States"},
-    {id: "UK", name: "United Kingdom"},
+    {id: "RO", name: "Romania"},
     {id: "ES", name: "Spain"},
     {id: "CH", name: "Switzerland"},
+    {id: "UK", name: "United Kingdom"},
+    {id: "USA", name: "United States"}
 ];
 
 export default {
