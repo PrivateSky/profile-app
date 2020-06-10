@@ -1,8 +1,16 @@
 <psk-page title="Scan Code">
     <psk-container controller-name="scanCodeController">
         <psk-form>
-            <psk-img width="500" height="500" src="@code"></psk-img>
-            <psk-button label="Enter contact code" event-name="enter-code"></psk-button>
+            <psk-form-row columns="3" layout="xs=[2,8,2] s=[2,8,2] m=[2,8,2] xl=[2,8,2]">
+                <span></span>
+                <psk-img width="500" height="500" src="@code"></psk-img>
+                <span></span>
+            </psk-form-row>
+            <psk-form-row columns="3" layout="xs=[4,4,4] s=[4,4,4] m=[4,4,4] xl=[4,4,4]">
+                <span></span>
+                <psk-button label="Scan contact code" event-name="scan-code"></psk-button>
+                <span></span>
+            </psk-form-row>
         </psk-form>
     </psk-container>
 </psk-page>

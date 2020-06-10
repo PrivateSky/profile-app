@@ -80,10 +80,10 @@ export default class addContactController extends ContainerController {
         };
         this.on("save-contact", saveContact);
 
-        this.on("attach", (event) => {
-            const file = event.data[0];
+        this.on("update-logo", (event) => {
+            const logo = event.data;
 
-            this.DSUStorage.setItem(`/data/${this.model.id}/image.png`, file, (err, url) => {
+            this.DSUStorage.setItem(`/data/${this.model.id}/image.png`, logo, (err, url) => {
                 if (err) {
                     throw err;
                 }
@@ -91,7 +91,7 @@ export default class addContactController extends ContainerController {
             });
         });
 
-        this.on('scan-code', (event) => {
+        this.on("scan-code", (event) => {
             this.DSUStorage.setObject(`${STORAGE_LOCATION}${this.profile.id}/contact.json`, this.model, (err) => {
                 history.push('/scan-code');
             });

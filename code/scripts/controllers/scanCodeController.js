@@ -9,9 +9,9 @@ export default class scanCodeController extends ContainerController {
         super(element);
 
         this.setModel({});
-        this.model.code = 'assets/images/code.png';
+        this.model.code = 'assets/images/qr-code.jpeg';
 
-        this.on('enter-code', (event) => {
+        this.on('scan-code', (event) => {
             this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
                 this.DSUStorage.getObject(`${STORAGE_LOCATION}${profile.id}/contact.json`, (err, contact) => {
                     contact.code = Utils.generateID(12);
