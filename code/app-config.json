@@ -45,6 +45,14 @@
             {
                 "name": "Scan Code",
                 "indexed": false
+            },
+            {
+                "name": "Outbox",
+                "indexed": false
+            },
+            {
+                "name": "Send message",
+                "indexed": false
             }
         ]
     }

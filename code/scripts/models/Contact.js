@@ -1,19 +1,23 @@
 import Utils from "./Utils.js";
+
 export default class Contact {
     logo = '/assets/images/default-logo.png';
     organization;
     country;
+
     constructor(contact) {
-        if(typeof contact !== undefined){
-            for(let prop in contact){
+        if (typeof contact !== undefined) {
+            for (let prop in contact) {
                 this[prop] = contact[prop];
             }
         }
 
-        this.id = Utils.generateID(32);
+        if (typeof this.id === "undefined") {
+            this.id = Utils.generateID(32);
+        }
     }
 
-    validate(){
+    validate() {
         const errors = [];
         if (!this.organization) {
             errors.push('Organization is required.');
@@ -24,5 +28,9 @@ export default class Contact {
         }
 
         return errors.length === 0 ? true : errors;
+    }
+
+    generateViewModel() {
+        return {label: this.organization, value: this.id};
     }
 }

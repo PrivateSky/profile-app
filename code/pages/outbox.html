@@ -1,0 +1,25 @@
+<psk-page title="Outbox">
+    <psk-form controller-name="outboxController">
+        <psk-condition condition="@outboxLoaded">
+            <psk-for-each slot="condition-true" data-view-model="outbox">
+                <psk-form-row columns="2" layout="xs=[1,11] s=[1,11] m=[1,11] xl=[1,11]">
+                    <psk-img width="65" height="65" src="@to.logo"></psk-img>
+                    <div>
+                        <b><psk-label label="@to.organization"></psk-label></b>
+                        <psk-label label="@subject"></psk-label>
+                    </div>
+                </psk-form-row>
+                <div slot="no-data">No messages</div>
+            </psk-for-each>
+            <div slot="condition-false">
+                Messages loading...
+            </div>
+        </psk-condition>
+
+        <psk-grid columns="3" layout="xs=[2,8,2] s=[2,8,2] m=[2,8,2] xl=[2,8,2]">
+            <div></div>
+            <psk-button event-name="send-message" label="Send message"></psk-button>
+            <div></div>
+        </psk-grid>
+    </psk-form>
+</psk-page>
