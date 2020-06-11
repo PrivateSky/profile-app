@@ -38,7 +38,6 @@ export default class sendMessageController extends ContainerController{
                         outbox = [];
                     }
                     message.to = this.contacts.find(contact => contact.id === message.to);
-                    console.log("message.to==============", message.to.logo);
                     outbox.push(message);
                     this.DSUStorage.setObject(`${STORAGE_LOCATION}${this.profile.id}/outbox.json`, outbox, (err) => {
                         history.push("/outbox");
