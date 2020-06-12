@@ -1,0 +1,22 @@
+<psk-page title="Message">
+    <psk-form controller-name="viewMessageController">
+        <psk-form-row columns="2" layout="m=[2, 10]" l="[2, 10]">
+            <psk-label label="To:"></psk-label>
+            <b>
+                <psk-label label="@message.to.organization"></psk-label>
+            </b>
+        </psk-form-row>
+        <psk-form-row columns="2" layout="m=[2, 10]" l="[2, 10]">
+            <psk-label label="Subject:"></psk-label>
+            <b>
+                <psk-label label="@message.subject"></psk-label>
+            </b>
+        </psk-form-row>
+        <psk-form-row columns="2" layout="m=[2, 10]" l="[2, 10]">
+            <psk-label label="Content:"></psk-label>
+            <b>
+                <psk-label label="@message.content"></psk-label>
+            </b>
+        </psk-form-row>
+    </psk-form>
+</psk-page>

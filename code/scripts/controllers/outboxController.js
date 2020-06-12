@@ -23,9 +23,26 @@ export default class outboxController extends ContainerController {
             });
         });
 
+        this.on("view-message", (event) => {
+            let target = event.target;
+            let targetLabel = target.getAttribute("label");
+            const regex = /[\d]+/gm;
+            const index = regex.exec(targetLabel);
+            console.log("View message listener", Array.isArray(index) ? index[0] : index);
+            history.push({
+                pathname: '/view-message',
+                state: {
+                    messageIndex: Array.isArray(index) ? index[0] : index
+                }
+            });
+        }, {capture: true});
 
         this.on("send-message", (event) => {
             history.push("/send-message");
+        });
+
+        this.on('openFeedback', (e) => {
+            this.feedbackEmitter = e.detail;
         });
     }
 };

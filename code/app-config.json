@@ -53,6 +53,10 @@
             {
                 "name": "Send message",
                 "indexed": false
+            },
+            {
+                "name": "View message",
+                "indexed": false
             }
         ]
     }
