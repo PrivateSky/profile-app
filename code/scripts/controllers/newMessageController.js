@@ -5,7 +5,7 @@ import Contact from "../models/Contact.js";
 
 const PROFILE_PATH = '/app/data/profile.json';
 const STORAGE_LOCATION = '/code/data/';
-export default class sendMessageController extends ContainerController{
+export default class newMessageController extends ContainerController{
     constructor(element, history) {
         super(element);
         this.setModel(new Message());
@@ -24,8 +24,7 @@ export default class sendMessageController extends ContainerController{
             });
 
             this.model.contacts = {
-                label: "To",
-                placeholder: "Select a contact",
+                placeholder: "To",
                 options: options
             };
         });

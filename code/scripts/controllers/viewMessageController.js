@@ -1,5 +1,6 @@
 import ContainerController from "../../cardinal/controllers/base-controllers/ContainerController.js";
 import Message from "../models/Message.js";
+import Profile from "../models/Profile.js";
 
 const PROFILE_PATH = '/app/data/profile.json';
 const STORAGE_LOCATION = '/code/data/';
@@ -11,7 +12,7 @@ export default class viewMessageController extends ContainerController {
             this.messageIndex = history.location.state.messageIndex;
         }
 
-        console.log("View message controller message index", this.messageIndex);
+
         if (typeof this.messageIndex !== "undefined") {
             this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
                 this.profile = profile;
@@ -24,5 +25,15 @@ export default class viewMessageController extends ContainerController {
         } else {
             this.model.message = new Message();
         }
+
+        this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
+            if (err) {
+                profile = new Profile();
+            } else {
+                profile = new Profile(profile);
+            }
+
+            this.model.profile = profile
+        });
     }
 };

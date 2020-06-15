@@ -51,8 +51,7 @@
                 "indexed": false
             },
             {
-                "name": "Send message",
-                "indexed": false
+                "name": "New message"
             },
             {
                 "name": "View message",

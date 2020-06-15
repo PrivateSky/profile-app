@@ -21,21 +21,12 @@ export default class addContactController extends ContainerController {
 
                 this.setModel(contact);
 
-                this.model.organizations = {
-                    label: "Organization",
-                    placeholder: "Select an organization",
-                    options: Organizations.getListAsVM()
-                };
-
                 this.model.countries = {
                     label: "Country",
                     placeholder: "Select a country",
                     options: Countries.getListAsVM()
                 };
 
-                if (typeof this.model.organization !== "undefined") {
-                    this.model.organizations.placeholder = Organizations.getOrganization(this.model.organization);
-                }
                 if (typeof this.model.country !== "undefined") {
                     this.model.countries.placeholder = Countries.getCountry(this.model.country);
                 }
@@ -66,10 +57,7 @@ export default class addContactController extends ContainerController {
                 } else {
                     contacts = contactsHistory;
                 }
-
-
                 contact.country = Countries.getCountry(contact.country);
-                contact.organization = Organizations.getOrganization(contact.organization);
                 contacts.push(contact);
                 this.DSUStorage.setObject(`${STORAGE_LOCATION}${this.profile.id}/contacts.json`, contacts, (err) => {
                     this.DSUStorage.setObject(`${STORAGE_LOCATION}${this.profile.id}/contact.json`, {}, (err) => {
