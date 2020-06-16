@@ -1,22 +1,29 @@
 <psk-page title="Message">
     <psk-form controller-name="viewMessageController">
-        <psk-chapter title="@message.subject">
+        <psk-form-row>
+            <h3><psk-label label="@message.subject"></psk-label></h3>
+        </psk-form-row>
             <psk-form-row columns="2" layout="m=[1,11] l=[1,11] xl=[1,11]">
                 <psk-img src="@profile.avatar" width="65" height="65"></psk-img>
                 <div>
                     <b>
                         <psk-label label="@profile.name"></psk-label>
                     </b>
-                    <psk-grid columns="2" layout="m=[1,11] l=[1,11] xl=[1,11]" >
+                    <div class="recipient">
+                        <style>
+                            .recipient {
+                                display: grid;
+                                grid-template-columns: 2ch auto;
+                            }
+                        </style>
                         <psk-label label="to"></psk-label>
                         <psk-label label="@message.to.organization"></psk-label>
-                    </psk-grid>
+                    </div>
                 </div>
             </psk-form-row>
             <psk-form-row>
-                <psk-textarea placeholder="@message.content" read-only></psk-textarea>
+                <psk-textarea placeholder="@message.content" read-only ></psk-textarea>
             </psk-form-row>
             </div>
-        </psk-chapter>
     </psk-form>
 </psk-page>
