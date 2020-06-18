@@ -1,6 +1,7 @@
 import ContainerController from "../../cardinal/controllers/base-controllers/ContainerController.js";
 import Message from "../models/Message.js";
 import Profile from "../models/Profile.js";
+import Outbox from "../models/Outbox.js";
 
 const PROFILE_PATH = '/app/data/profile.json';
 const STORAGE_LOCATION = '/code/data/';
@@ -17,9 +18,10 @@ export default class viewOutboxMessageController extends ContainerController {
             this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
                 this.profile = profile;
                 this.DSUStorage.getObject(`${STORAGE_LOCATION}${this.profile.id}/outbox.json`, (err, messages) => {
-                    console.log("Got outbox json", messages);
+                    if (typeof messages === "undefined") {
+                        messages = Outbox.getMessages();
+                    }
                     this.model.message = new Message(messages[this.messageIndex]);
-                    console.log("Message", this.model.message);
                 });
             });
         } else {

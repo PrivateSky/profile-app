@@ -1,7 +1,7 @@
 import ContainerController from '../../cardinal/controllers/base-controllers/ContainerController.js';
 import Contact from '../models/Contact.js';
 import Countries from "../models/Countries.js";
-import Organizations from "../models/Organizations.js";
+import Contacts from "../models/Contacts.js";
 
 const PROFILE_PATH = '/app/data/profile.json';
 const STORAGE_LOCATION = '/code/data/';
@@ -52,13 +52,15 @@ export default class addContactController extends ContainerController {
             let contacts = [];
 
             this.DSUStorage.getObject(`${STORAGE_LOCATION}${this.profile.id}/contacts.json`, (err, contactsHistory) => {
-                if (err) {
-
+                if (typeof contactsHistory === "undefined") {
+                    contacts = Contacts.getContacts();
                 } else {
                     contacts = contactsHistory;
                 }
+
                 contact.country = Countries.getCountry(contact.country);
                 contacts.push(contact);
+                console.log("Just added contact +++++++++++++++++++", contacts);
                 this.DSUStorage.setObject(`${STORAGE_LOCATION}${this.profile.id}/contacts.json`, contacts, (err) => {
                     this.DSUStorage.setObject(`${STORAGE_LOCATION}${this.profile.id}/contact.json`, {}, (err) => {
                         history.push('/contacts');

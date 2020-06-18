@@ -8,13 +8,13 @@
         <psk-form-row columns="2" layout="m=[1,11] l=[1,11] xl=[1,11]">
             <psk-img src="@message.from.logo" width="60"></psk-img>
             <div id="twoRowsGrid">
-                <b>
-                    <psk-label label="@profile.name"></psk-label>
-                </b>
-                <div class="twoColsGrid">
-                    <psk-label label="From"></psk-label>
-                    <psk-label label="@message.from.organization"></psk-label>
+                <div class="fiveCharsCol">
+                    <psk-label label="from"></psk-label>
+                    <b>
+                        <psk-label label="@message.from.organization"></psk-label>
+                    </b>
                 </div>
+                <psk-label label="to me"></psk-label>
             </div>
         </psk-form-row>
         <psk-form-row>

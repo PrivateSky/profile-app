@@ -1,4 +1,9 @@
-.twoColsGrid {
+.twoCharsCol {
+    display: grid;
+    grid-template-columns: 2ch auto;
+}
+
+.fiveCharsCol {
     display: grid;
     grid-template-columns: 5ch auto;
 }

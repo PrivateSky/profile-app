@@ -1,5 +1,5 @@
 import ContainerController from "../../cardinal/controllers/base-controllers/ContainerController.js";
-
+import Contacts from "../models/Contacts.js";
 const PROFILE_PATH = '/app/data/profile.json';
 const STORAGE_LOCATION = '/code/data/';
 
@@ -17,7 +17,7 @@ export default class contactsController extends ContainerController {
         this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
             this.DSUStorage.getObject(`${STORAGE_LOCATION}${profile.id}/contacts.json`, (err, contactsHistory) => {
                 if (typeof contactsHistory === "undefined") {
-                    return this.model.contacts = [];
+                    return this.model.contacts = Contacts.getContacts();
                 }
 
                 this.model.contacts = contactsHistory;
