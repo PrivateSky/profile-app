@@ -47,6 +47,10 @@
                 "indexed": false
             },
             {
+                "name": "Inbox",
+                "indexed": false
+            },
+            {
                 "name": "Outbox",
                 "indexed": false
             },
