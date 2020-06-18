@@ -1,0 +1,9 @@
+.twoColsGrid {
+    display: grid;
+    grid-template-columns: 2ch auto;
+}
+
+#twoRowsGrid{
+    display: grid;
+    grid-template-rows: 1ch;
+}

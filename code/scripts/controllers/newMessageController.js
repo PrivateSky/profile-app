@@ -24,7 +24,8 @@ export default class newMessageController extends ContainerController{
             });
 
             this.model.contacts = {
-                placeholder: "To",
+                label: "To",
+                placeholder: "Select a contact",
                 options: options
             };
         });

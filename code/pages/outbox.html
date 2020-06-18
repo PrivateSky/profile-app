@@ -3,13 +3,14 @@
         <psk-condition condition="@outboxLoaded">
             <psk-for-each slot="condition-true" data-view-model="outbox">
                 <psk-form-row columns="2" layout="xs=[1,11] s=[1,11] m=[1,11] xl=[1,11]">
-                    <psk-img width="65" height="65" src="@to.logo"></psk-img>
-                    <div>
+                    <psk-img width="65" src="@to.logo"></psk-img>
+                    <div id="twoRowsGrid">
                         <b><psk-label label="@to.organization" onclick="this.dispatchEvent(new Event('view-message'))"></psk-label></b>
                         <psk-label label="@subject"></psk-label>
                     </div>
                 </psk-form-row>
                 <div slot="no-data">No messages</div>
+                <hr>
             </psk-for-each>`
             <div slot="condition-false">
                 Messages loading...
