@@ -1,5 +1,5 @@
 <psk-page title="Message">
-    <psk-form controller-name="viewMessageController">
+    <psk-form controller-name="viewInboxMessageController">
         <psk-form-row>
             <h3>
                 <psk-label label="@message.subject"></psk-label>
@@ -12,8 +12,8 @@
                     <psk-label label="@profile.name"></psk-label>
                 </b>
                 <div class="twoColsGrid">
-                    <psk-label label="to"></psk-label>
-                    <psk-label label="@message.to.organization"></psk-label>
+                    <psk-label label="From"></psk-label>
+                    <psk-label label="@message.from.organization"></psk-label>
                 </div>
             </div>
         </psk-form-row>

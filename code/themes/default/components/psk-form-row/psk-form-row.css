@@ -1,6 +1,6 @@
 .twoColsGrid {
     display: grid;
-    grid-template-columns: 2ch auto;
+    grid-template-columns: 5ch auto;
 }
 
 #twoRowsGrid{

@@ -58,7 +58,11 @@
                 "name": "New message"
             },
             {
-                "name": "View message",
+                "name": "View outbox message",
+                "indexed": false
+            },
+            {
+                "name": "View inbox message",
                 "indexed": false
             }
         ]

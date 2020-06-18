@@ -1,19 +1,17 @@
 <psk-page title="Inbox">
     <psk-form controller-name="inboxController">
-        <psk-condition condition="@inboxLoaded">
-            <psk-for-each slot="condition-true" data-view-model="inbox">
-                <psk-form-row columns="2" layout="xs=[1,11] s=[1,11] m=[1,11] xl=[1,11]" class="withSeparator">
-                    <psk-img width="65" src="@from.logo"></psk-img>
-                    <div id="twoRowsGrid">
-                        <b><psk-label label="@from.organization"></psk-label></b>
-                        <psk-label label="@subject"></psk-label>
-                    </div>
-                </psk-form-row>
-                <div slot="no-data">No messages</div>
-            </psk-for-each>`
-            <div slot="condition-false">
-                Messages loading...
-            </div>
-        </psk-condition>
+        <psk-for-each data-view-model="inbox">
+            <psk-form-row columns="2" layout="xs=[1,11] s=[1,11] m=[1,11] xl=[1,11]" class="withSeparator">
+                <psk-img width="65" src="@from.logo"></psk-img>
+                <div id="twoRowsGrid" onclick=>
+                    <b>
+                        <psk-label label="@from.organization"
+                                   onclick="this.dispatchEvent(new Event('view-inbox-message'))"></psk-label>
+                    </b>
+                    <psk-label label="@subject"></psk-label>
+                </div>
+            </psk-form-row>
+            <div slot="no-data">No messages</div>
+        </psk-for-each>
     </psk-form>
 </psk-page>
