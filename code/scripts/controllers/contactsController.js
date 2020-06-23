@@ -1,7 +1,5 @@
 import ContainerController from "../../cardinal/controllers/base-controllers/ContainerController.js";
-import Contacts from "../models/Contacts.js";
-const PROFILE_PATH = '/app/data/profile.json';
-const STORAGE_LOCATION = '/code/data/';
+const CONTACTS_PATH = '/app/data/contacts.json';
 
 export default class contactsController extends ContainerController {
     constructor(element, history) {
@@ -14,15 +12,13 @@ export default class contactsController extends ContainerController {
         }, 'contacts');
 
         this.model.contacts = [];
-        this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
-            this.DSUStorage.getObject(`${STORAGE_LOCATION}${profile.id}/contacts.json`, (err, contactsHistory) => {
-                if (typeof contactsHistory === "undefined") {
-                    return this.model.contacts = Contacts.getContacts();
-                }
+        this.DSUStorage.getObject(CONTACTS_PATH, (err, contactsHistory) => {
+            if (typeof contactsHistory === "undefined") {
+                return this.model.contacts = []
+            }
 
-                this.model.contacts = contactsHistory;
+            this.model.contacts = contactsHistory;
 
-            });
         });
 
         this.on("add-contact", (event) => {

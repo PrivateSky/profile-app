@@ -2,9 +2,9 @@ import ContainerController from "../../cardinal/controllers/base-controllers/Con
 import Message from "../models/Message.js";
 import Contact from "../models/Contact.js";
 import Outbox from "../models/Outbox.js";
-import Contacts from "../models/Contacts.js";
 
 const PROFILE_PATH = '/app/data/profile.json';
+const CONTACTS_PATH = '/app/data/contacts.json';
 const STORAGE_LOCATION = '/code/data/';
 export default class newMessageController extends ContainerController{
     constructor(element, history) {
@@ -14,9 +14,9 @@ export default class newMessageController extends ContainerController{
         this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
             this.profile = profile;
             let options = [];
-            this.DSUStorage.getObject(`${STORAGE_LOCATION}${this.profile.id}/contacts.json`, (err, contacts) => {
+            this.DSUStorage.getObject(CONTACTS_PATH, (err, contacts) => {
                 if (typeof contacts === "undefined") {
-                    contacts = Contacts.getContacts();
+                    contacts = [];
                 }
                 this.contacts = contacts;
                 contacts.forEach(contact => {

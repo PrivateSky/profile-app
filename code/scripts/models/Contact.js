@@ -2,7 +2,7 @@ import Utils from "./Utils.js";
 
 export default class Contact {
     logo = '/assets/images/default-logo.png';
-    organization;
+    name;
     country;
 
     constructor(contact) {
@@ -19,7 +19,7 @@ export default class Contact {
 
     validate() {
         const errors = [];
-        if (!this.organization) {
+        if (!this.name) {
             errors.push('Organization is required.');
         }
 
@@ -31,6 +31,6 @@ export default class Contact {
     }
 
     generateViewModel() {
-        return {label: this.organization, value: this.id};
+        return {label: this.name, value: this.id};
     }
 }
