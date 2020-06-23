@@ -10,5 +10,6 @@
 
 #twoRowsGrid{
     display: grid;
-    grid-template-rows: 1ch;
+    grid-template-rows: 2ch;
+    padding-bottom: 30px;
 }
