@@ -3,7 +3,7 @@ import Message from "./Message.js";
 const messages = [
     {
         to: {
-            organization: "Food and Drug Administration",
+            name: "Food and Drug Administration",
             logo: "/assets/images/fda-logo.jpg"
         },
         subject: "Xanax approval request",
@@ -11,7 +11,7 @@ const messages = [
     },
     {
         to: {
-            organization: "National Institute of Health",
+            name: "National Institute of Health",
             logo: "/assets/images/nih-logo.png"
         },
         subject: "Albuferol approval request",

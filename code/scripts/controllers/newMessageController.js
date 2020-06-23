@@ -39,7 +39,7 @@ export default class newMessageController extends ContainerController{
                     if (typeof outbox === "undefined") {
                         outbox = Outbox.getMessages();
                     }
-                    message.to = this.contacts.find(contact => contact.id === message.to);
+                    message.to = this.contacts.find(contact => contact.code === message.to);
                     outbox.push(message);
                     this.DSUStorage.setObject(`${STORAGE_LOCATION}${this.profile.id}/outbox.json`, outbox, (err) => {
                         history.push("/outbox");

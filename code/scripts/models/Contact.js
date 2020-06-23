@@ -4,16 +4,13 @@ export default class Contact {
     logo = '/assets/images/default-logo.png';
     name;
     country;
+    code;
 
     constructor(contact) {
         if (typeof contact !== undefined) {
             for (let prop in contact) {
                 this[prop] = contact[prop];
             }
-        }
-
-        if (typeof this.id === "undefined") {
-            this.id = Utils.generateID(32);
         }
     }
 
@@ -31,6 +28,6 @@ export default class Contact {
     }
 
     generateViewModel() {
-        return {label: this.name, value: this.id};
+        return {label: this.name, value: this.code};
     }
 }
