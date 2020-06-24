@@ -2,12 +2,17 @@
     <psk-form controller-name="outboxController">
         <psk-condition condition="@outboxLoaded">
             <psk-for-each slot="condition-true" data-view-model="outbox">
-                <psk-form-row columns="2" layout="xs=[1,11] s=[1,11] m=[1,11] xl=[1,11]" class="withSeparator">
-                    <psk-img width="65" src="@to.logo"></psk-img>
-                    <div id="twoRowsGrid">
-                        <b><psk-label label="@to.name" onclick="this.dispatchEvent(new Event('view-outbox-message'))"></psk-label></b>
-                        <psk-label label="@subject"></psk-label>
-                    </div>
+                <psk-form-row columns="4" layout="xs=[1,2,4,5] s=[1,2,4,5] m=[1,2,4,5] l=[1,2,4,5] xl=[1,2,4,5]"
+                              class="boxHover">
+                    <psk-label label="to:"></psk-label>
+                    <b>
+                        <psk-label label="@to.name" onclick="this.dispatchEvent(new Event('view-outbox-message'))"
+                        ></psk-label>
+                    </b>
+                    <b>
+                        <psk-label label="@title"></psk-label>
+                    </b>
+                    <psk-label label="@shortHtml"></psk-label>
                 </psk-form-row>
                 <div slot="no-data">No messages</div>
             </psk-for-each>

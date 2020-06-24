@@ -2,6 +2,10 @@
     display: grid;
     grid-template-columns: 2ch auto;
 }
+#to {
+    display: grid;
+    grid-template-columns: 2ch;
+}
 
 .fiveCharsCol {
     display: grid;

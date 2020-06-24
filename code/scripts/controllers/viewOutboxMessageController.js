@@ -5,6 +5,8 @@ import Outbox from "../models/Outbox.js";
 
 const PROFILE_PATH = '/app/data/profile.json';
 const STORAGE_LOCATION = '/code/data/';
+const INBOX_PATH = `/app/data/inbox.json`;
+const OUTBOX_PATH = `/app/data//outbox.json`;
 export default class viewOutboxMessageController extends ContainerController {
     constructor(element, history) {
         super(element);
@@ -17,9 +19,9 @@ export default class viewOutboxMessageController extends ContainerController {
         if (typeof this.messageIndex !== "undefined") {
             this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
                 this.profile = profile;
-                this.DSUStorage.getObject(`${STORAGE_LOCATION}${this.profile.id}/outbox.json`, (err, messages) => {
+                this.DSUStorage.getObject(OUTBOX_PATH, (err, messages) => {
                     if (typeof messages === "undefined") {
-                        messages = Outbox.getMessages();
+                        this.model.message = new Message();
                     }
                     this.model.message = new Message(messages[this.messageIndex]);
                 });

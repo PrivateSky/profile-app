@@ -2,6 +2,7 @@ import ContainerController from "../../cardinal/controllers/base-controllers/Con
 import Outbox from "../models/Outbox.js";
 const PROFILE_PATH = '/app/data/profile.json';
 const STORAGE_LOCATION = '/code/data/';
+const OUTBOX_PATH = `/app/data//outbox.json`;
 
 export default class outboxController extends ContainerController {
     constructor(element, history) {
@@ -14,12 +15,12 @@ export default class outboxController extends ContainerController {
 
         this.DSUStorage.getObject(PROFILE_PATH, (err, profile) => {
             this.profile = profile;
-            this.DSUStorage.getObject(`${STORAGE_LOCATION}${this.profile.id}/outbox.json`, (err, outbox) => {
+            this.DSUStorage.getObject(OUTBOX_PATH, (err, outbox) => {
                 if (typeof outbox === "undefined") {
-                    return this.model.outbox = Outbox.getMessages();
+                    return this.model.outbox = [];
                 }
 
-                this.model.outbox = this.model.outbox.concat(outbox);
+                this.model.outbox = outbox;
             });
         });
 

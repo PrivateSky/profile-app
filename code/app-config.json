@@ -64,6 +64,10 @@
             {
                 "name": "View inbox message",
                 "indexed": false
+            },
+            {
+                "name": "Communication",
+                "indexed": false
             }
         ]
     }
