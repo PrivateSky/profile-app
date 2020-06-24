@@ -60,7 +60,6 @@ export default class addContactController extends ContainerController {
 
                 contact.country = Countries.getCountry(contact.country);
                 contacts.push(contact);
-                console.log("Just added contact +++++++++++++++++++", contacts);
                 this.DSUStorage.setObject(CONTACTS_PATH, contacts, (err) => {
                     this.DSUStorage.setObject(`${STORAGE_LOCATION}${this.profile.id}/contact.json`, {}, (err) => {
                         history.push('/contacts');
