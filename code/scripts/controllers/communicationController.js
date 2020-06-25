@@ -2,8 +2,6 @@ import ContainerController from '../../cardinal/controllers/base-controllers/Con
 import Message from "../models/Message.js";
 
 const CONTACTS_PATH = "/app/data/contacts.json";
-const INBOX_PATH = `/app/data/inbox.json`;
-const OUTBOX_PATH = `/app/data//outbox.json`;
 export default class communicationController extends ContainerController {
     constructor(element, history) {
         super(element);
@@ -15,8 +13,11 @@ export default class communicationController extends ContainerController {
             const message = new Message().getApprovalMessage(leaflet);
             this.DSUStorage.getObject(CONTACTS_PATH, (err, contacts) => {
                 message.to = contacts.find(contact => contact.code === leaflet.healthAuthority);
-                this.updateInbox(INBOX_PATH, message, (err) => {
-                    this.updateOutbox(OUTBOX_PATH, message, (err) => {
+                message.from = source;
+                const inboxPath = `/code/data/${leaflet.healthAuthority}/inbox.json`;
+                const outboxPath = `/code/data/${source}/outbox.json`;
+                this.updateInbox(inboxPath, message, (err) => {
+                    this.updateOutbox(outboxPath, message, (err) => {
                         window.dispatchEvent(new Event("leaflet-sent"));
                     });
                 });

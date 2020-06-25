@@ -2,7 +2,7 @@
     <psk-form controller-name="viewOutboxMessageController">
         <psk-form-row>
             <h3>
-                <psk-label label="@message.subject"></psk-label>
+                <psk-label label="@message.title"></psk-label>
             </h3>
         </psk-form-row>
         <psk-form-row columns="2" layout="m=[1,11] l=[1,11] xl=[1,11]">
@@ -18,7 +18,10 @@
             </div>
         </psk-form-row>
         <psk-form-row>
-            <psk-textarea placeholder="@message.longHtml" read-only></psk-textarea>
+<!--            <psk-textarea placeholder="@message.longHtml" read-only></psk-textarea>-->
+            <div id="messageContent">
+
+            </div>
         </psk-form-row>
         </div>
     </psk-form>
