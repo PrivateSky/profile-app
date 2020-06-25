@@ -28,11 +28,11 @@ export default class viewOutboxMessageController extends ContainerController {
                         this.model.message = new Message();
                     }
                     this.model.message = new Message(messages[this.messageIndex]);
-                    MessageDisplayer.displayMessage(this.model.message);
+                    MessageDisplayer.displayMessage(this.model.message, element);
                 });
             } else {
                 this.model.message = new Message();
-                MessageDisplayer.displayMessage(this.model.message);
+                MessageDisplayer.displayMessage(this.model.message, element);
             }
         });
     }
