@@ -21,7 +21,7 @@ export default class Message {
 
     getApprovalMessage(leaflet) {
         this.title = `${leaflet.name} approval request`;
-        this.shortHtml = `Approval message for ${leaflet.name}`;
+        this.shortHtml = "Please review the attached leaflet and act accordingly";
         this.to = leaflet.healthAuthority;
         return this;
     }
