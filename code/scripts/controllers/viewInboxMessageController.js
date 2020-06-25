@@ -4,6 +4,7 @@ import Profile from "../models/Profile.js";
 import MessageDisplayer from "../services/MessageDisplayer.js";
 
 const PROFILE_PATH = '/app/data/profile.json';
+const CONTACTS_PATH = '/app/data/contacts.json';
 const STORAGE_LOCATION = '/code/data/';
 export default class viewOutboxMessageController extends ContainerController {
     constructor(element, history) {
@@ -28,7 +29,11 @@ export default class viewOutboxMessageController extends ContainerController {
                         this.model.message = new Message();
                     }
                     this.model.message = new Message(messages[this.messageIndex]);
-                    MessageDisplayer.displayMessage(this.model.message, element);
+                    this.DSUStorage.getObject(CONTACTS_PATH, (err, contacts) => {
+                        const sourceContact = contacts.find(contact => contact.code === this.model.message.from);
+                        this.model.message.from = sourceContact;
+                        MessageDisplayer.displayMessage(this.model.message, element);
+                    });
                 });
             } else {
                 this.model.message = new Message();
