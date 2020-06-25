@@ -13,13 +13,13 @@ export default {
         }
 
         if (typeof message.longHtml === "undefined") {
-            message.longHtml = `<div> <p>Please review the below leaflet and act accordingly</p> 
+            message.longHtml = `<div> <p>${message.shortHtml}</p> 
             <iframe src="/${message.id}" style="width: 100%; height:400px;"></iframe>
             <psk-button label="Approve"></psk-button>
             <psk-button label="Reject"></psk-button></div>`;
         }
         $$.interactions
-            .startSwarmAs("test/agent/007", "messageLoader", "mountDSU", "/" + message.id, message.dsu)
+            .startSwarmAs("test/agent/007", "messageLoader", "mountDSU", `/download/${message.id}/attachment`, message.dsu)
             .onReturn((err, res) => {
                 element.querySelector("#messageContent").innerHTML = message.longHtml;
             });

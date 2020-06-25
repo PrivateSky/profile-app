@@ -9,11 +9,12 @@ export default class communicationController extends ContainerController {
         window.addEventListener("send-leaflet", (event) => {
             const leaflet = event.data.leaflet;
             const source = event.data.source;
-
+            const leafletSEED = event.data.leafletSEED;
             const message = new Message().getApprovalMessage(leaflet);
             this.DSUStorage.getObject(CONTACTS_PATH, (err, contacts) => {
                 message.to = contacts.find(contact => contact.code === leaflet.healthAuthority);
                 message.from = source;
+                message.dsu = leafletSEED;
                 const inboxPath = `/code/data/${leaflet.healthAuthority}/inbox.json`;
                 const outboxPath = `/code/data/${source}/outbox.json`;
                 this.updateInbox(inboxPath, message, (err) => {
