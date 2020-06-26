@@ -32,12 +32,12 @@ export default class viewOutboxMessageController extends ContainerController {
                     this.DSUStorage.getObject(CONTACTS_PATH, (err, contacts) => {
                         const sourceContact = contacts.find(contact => contact.code === this.model.message.from);
                         this.model.message.from = sourceContact;
-                        MessageDisplayer.displayMessage(this.model.message, element);
+                        MessageDisplayer.displayMessage(this.model.message, element, true);
                     });
                 });
             } else {
                 this.model.message = new Message();
-                MessageDisplayer.displayMessage(this.model.message, element);
+                MessageDisplayer.displayMessage(this.model.message, element, true);
             }
         });
     }
