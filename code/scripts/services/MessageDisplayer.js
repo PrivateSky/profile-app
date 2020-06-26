@@ -68,18 +68,9 @@ export default {
         }
 
         if (typeof message.longHtml === "undefined") {
-        // <!--            <embed src="/messages/${message.id}/attachment.pdf" style="width: 100%; height:400px;"></embed>--
-            element.addEventListener("start-download", (event) => {
-                let fileDownloader = new FileDownloader(`/app/messages/${message.id}`, "attachment.pdf");
-                fileDownloader.downloadFile();
-            });
             message.longHtml = `<div> <p>${message.shortHtml}</p>
-            <psk-grid columns="2" layout="m=[1, 11] l=[1,11] xl=[1,11]"> 
-                <psk-label label="attachment.pdf"></psk-label>
-                <psk-button label="Download" event-name="start-download"></psk-button>
-            </psk-grid>
-            <psk-button label="Approve"></psk-button>
-            <psk-button label="Reject"></psk-button></div>`;
+            <psk-img label="Leaflet" src="/messages/${message.id}/attachment.png"></psk-img>
+            </div>`;
         }
         $$.interactions
             .startSwarmAs("test/agent/007", "messageLoader", "mountDSU", `/app/messages/${message.id}`, message.dsu)
