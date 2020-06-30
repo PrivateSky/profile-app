@@ -87,6 +87,20 @@
           }
         }
       ]
+    },
+    {
+      "name": "themes",
+      "src": "",
+      "actions": [
+        {
+          "type": "copy",
+          "src": "../themes/",
+          "target": "code/themes",
+          "options": {
+            "overwrite": true
+          }
+        }
+      ]
     }
   ],
   "postbuild": [
