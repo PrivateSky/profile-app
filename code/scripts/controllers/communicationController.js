@@ -13,7 +13,7 @@ export default class communicationController extends ContainerController {
             this.DSUStorage.getObject(CONTACTS_PATH, (err, contacts) => {
                 //update the model with the contact object ref
                 message.to = contacts.find(contact => contact.code === messageModel.target);
-
+                message.from = messageModel.source;
                 const inboxPath = `/code/data/${message.target}/inbox.json`;
                 const outboxPath = `/code/data/${message.source}/outbox.json`;
                 this.updateInbox(inboxPath, message, (err) => {
