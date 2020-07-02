@@ -12,23 +12,9 @@ export default {
         }
 
         if (typeof message.longHtml === "undefined") {
-            if(showButtons){
+            if (showButtons) {
                 message.longHtml = `<psk-ssapp app-name="${message.id}" landing-path="/review-leaflet"></psk-ssapp>`
-               /* message.longHtml = `<div> <p>${message.shortHtml}</p>
-            <psk-img label="Leaflet" src="/messages/${message.id}/attachment.png"></psk-img>
-            <psk-grid columns="6" layout="m=[2,2,1,2,2,2] l=[2,2,1,2,2,2] xl=[2,2,1,2,2,2]">
-                <div></div>
-                <div></div>
-                <div></div>
-                <psk-button label="Approve"></psk-button>
-                <psk-button label="Reject"></psk-button>
-                                <div></div>
-            </psk-grid>
-            </div>`;*/
-            }else {
-                /*message.longHtml = `<div> <p>${message.shortHtml}</p>
-            <psk-img label="Leaflet" src="/messages/${message.id}/attachment.png"></psk-img>
-            </div>`;*/
+            } else {
                 message.longHtml = `<psk-ssapp app-name="${message.id}" landing-path="/view-leaflet"></psk-ssapp>`
             }
         }
