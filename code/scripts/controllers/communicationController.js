@@ -7,17 +7,15 @@ export default class communicationController extends ContainerController {
         super(element);
 
         window.addEventListener("send-leaflet", (event) => {
-            const messageDSUSeed = event.data.messageDSUSeed;
-            const leaflet = event.data.leaflet;
-            const source = event.data.source;
-            // const leafletSEED = event.data.leafletSEED;
-            const message = new Message().getApprovalMessage(leaflet);
+            debugger;
+            let messageModel = event.data;
+            let message = new Message(messageModel).getApprovalMessage(messageModel.leaflet);
             this.DSUStorage.getObject(CONTACTS_PATH, (err, contacts) => {
-                message.to = contacts.find(contact => contact.code === leaflet.healthAuthority);
-                message.from = source;
-                message.dsu = messageDSUSeed;
-                const inboxPath = `/code/data/${leaflet.healthAuthority}/inbox.json`;
-                const outboxPath = `/code/data/${source}/outbox.json`;
+                //update the model with the contact object ref
+                message.to = contacts.find(contact => contact.code === messageModel.target);
+
+                const inboxPath = `/code/data/${message.target}/inbox.json`;
+                const outboxPath = `/code/data/${message.source}/outbox.json`;
                 this.updateInbox(inboxPath, message, (err) => {
                     this.updateOutbox(outboxPath, message, (err) => {
                         window.dispatchEvent(new Event("leaflet-sent"));
