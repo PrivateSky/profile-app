@@ -7,7 +7,6 @@ export default class communicationController extends ContainerController {
         super(element);
 
         window.addEventListener("send-leaflet", (event) => {
-            debugger;
             let messageModel = event.data;
             let message = new Message(messageModel).getApprovalMessage(messageModel.leaflet);
             this.DSUStorage.getObject(CONTACTS_PATH, (err, contacts) => {
