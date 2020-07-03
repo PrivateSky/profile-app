@@ -2,9 +2,7 @@
     <psk-form controller-name="inboxController">
         <psk-condition condition="@inboxLoaded">
             <psk-for-each slot="condition-true" data-view-model="inbox">
-                <psk-form-row columns="4" layout="xs=[1,2,4,5] s=[1,2,4,5] m=[1,2,4,5] l=[1,2,4,5] xl=[1,2,4,5]"
-                              class="boxHover">
-                    <psk-label label="from:"></psk-label>
+                <psk-form-row columns="3" layout="xs=[3,4,5] s=[3,4,5] m=[3,4,5] l=[3,4,5] xl=[3,4,5]" class="boxHover">
                     <b>
                         <psk-label label="@from.name"
                                    onclick="this.dispatchEvent(new Event('view-inbox-message'))"></psk-label>
