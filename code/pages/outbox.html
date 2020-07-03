@@ -2,7 +2,7 @@
     <psk-form controller-name="outboxController">
         <psk-condition condition="@outboxLoaded">
             <psk-for-each slot="condition-true" data-view-model="outbox">
-                <psk-form-row columns="4" layout="xs=[3,4,5] s=[3,4,5] m=[3,4,5] l=[3,4,5] xl=[3,4,5]"
+                <psk-form-row columns="3" layout="xs=[3,4,5] s=[3,4,5] m=[3,4,5] l=[3,4,5] xl=[3,4,5]"
                               class="boxHover">
                     <b>
                         <psk-label label="@to.name" onclick="this.dispatchEvent(new Event('view-outbox-message'))"
