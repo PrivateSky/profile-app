@@ -1,7 +1,6 @@
 const DOSSIER_SEED_FILE_PATH = "./seed";
 const CARDINAL_SEED_FILE_PATH = "../cardinal/seed";
 const THEMES_PATH = "../themes";
-const CONFIG_PATH = "../code/config.json";
 const BRICK_STORAGE_ENDPOINT = process.env.SSAPPS_FAVORITE_EDFS_ENDPOINT || "http://127.0.0.1:8080";
 
 require("./../../privatesky/psknode/bundles/csbBoot.js");
@@ -10,8 +9,6 @@ const fs = require("fs");
 const EDFS = require("edfs");
 
 const edfs = EDFS.attachToEndpoint(BRICK_STORAGE_ENDPOINT);
-
-let APP_CONFIG = {};
 
 function getCardinalDossierSeed(callback){
     fs.readFile(CARDINAL_SEED_FILE_PATH, (err, content)=>{
