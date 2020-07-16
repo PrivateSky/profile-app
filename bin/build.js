@@ -15,7 +15,7 @@ function getCardinalDossierSeed(callback){
         if (err || content.length === 0) {
             return callback(err);
         }
-        callback(undefined, content);
+        callback(undefined, content.toString());
     })
 }
 
@@ -25,7 +25,7 @@ function getThemeDossierSeed(themeName, callback){
         if (err || content.length === 0) {
             return callback(err);
         }
-        callback(undefined, content);
+        callback(undefined, content.toString());
     })
 }
 
