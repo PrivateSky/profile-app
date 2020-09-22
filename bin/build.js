@@ -1,11 +1,13 @@
 const DOSSIER_SEED_FILE_PATH = "./seed";
 const CARDINAL_SEED_FILE_PATH = "../cardinal/seed";
 const THEMES_PATH = "../themes";
+const CONFIG_PATH = "../code/config.json";
 const BRICK_STORAGE_ENDPOINT = process.env.SSAPPS_FAVORITE_EDFS_ENDPOINT || "http://localhost:8080";
 const DEFAULT_DOMAIN = "default";
 
-require("./../../privatesky/psknode/bundles/csbBoot.js");
-require("./../../privatesky/psknode/bundles/openDSU.js");
+require("./../../../privatesky/psknode/bundles/csbBoot.js");
+require("./../../../privatesky/psknode/bundles/openDSU.js");
+
 const fs = require("fs");
 const openDSU = require("opendsu");
 const bdns = openDSU.loadApi("bdns");
@@ -15,6 +17,8 @@ bdns.addRawInfo(DEFAULT_DOMAIN, {
     brickStorages: [BRICK_STORAGE_ENDPOINT],
     anchoringServices: [BRICK_STORAGE_ENDPOINT]
 })
+
+let APP_CONFIG = {};
 
 function getCardinalDossierSeed(callback){
     fs.readFile(CARDINAL_SEED_FILE_PATH, (err, content)=>{
@@ -135,6 +139,11 @@ function build(callback) {
             keySSI = keyssi.parse(content.toString());
         } catch (err) {
             console.log("Invalid keySSI. Creating a new Dossier...");
+            return createDossier(callback);
+        }
+
+        if(keySSI.getHint() !== BRICK_STORAGE_ENDPOINT){
+            console.log("Endpoint change detected. Creating a new Dossier...");
             return createDossier(callback);
         }
 
